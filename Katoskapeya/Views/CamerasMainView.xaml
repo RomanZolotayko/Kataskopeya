@@ -1,0 +1,70 @@
+﻿<Window x:Class="Kataskopeya.Views.CamerasMainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kataskopeya.ViewModels"
+        mc:Ignorable="d"
+        Title="CamerasMainView" Height="450" Width="800">
+    <Window.DataContext>
+        <local:CamerasMainViewModel/>
+    </Window.DataContext>
+   <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="399*" />
+            <ColumnDefinition Width="118*" />
+        </Grid.ColumnDefinitions>
+        <Image Source="{Binding Image}" Margin="10,0,10,70" />
+        <Button Width="67"
+                Height="21"
+                Margin="213,0,0,25"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Command="{Binding StartSourceCommand}"
+                Content="Start" />
+        <Button Width="67"
+                Height="21"
+                Margin="296,0,0,25"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Command="{Binding StopSourceCommand}"
+                Content="Stop" />
+        <RadioButton Grid.Column="1"
+                     Width="98"
+                     Height="21"
+                     Margin="10,10,0,0"
+                     HorizontalAlignment="Left"
+                     
+                     VerticalAlignment="Top"
+                     Content="Original"
+                     IsChecked="{Binding Original}" />
+        <RadioButton Grid.Column="1"
+                     Width="98"
+                     Height="21"
+                     x:Name="rbThreshold"
+                     Margin="10,52,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Content="Threshold"
+                     IsChecked="{Binding Thresholded}" />
+        <RadioButton Grid.Column="1"
+                     Width="98"
+                     Height="21"
+                     Margin="10,31,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Content="Grayscale"
+                     IsChecked="{Binding Grayscaled}" />
+        <Slider x:Name="slider"
+                Minimum="0"
+                Maximum="256"
+                IsEnabled="{Binding ElementName=rbThreshold, Path=IsChecked}"
+                Value="{Binding Threshold}"
+                Grid.Column="1"
+                Width="98"
+                Height="32"
+                Margin="10,73,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" />
+    </Grid>
+</Window>
