@@ -7,6 +7,7 @@ using Emgu.CV.Structure;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Extensions;
+using Kataskopeya.Helpers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -37,6 +38,7 @@ namespace Kataskopeya.ViewModels
         private Image<Bgr, byte> _currentFrame;
         private Image<Gray, byte> _result;
         private byte[] _monitoringImage;
+        private RecognizerEngine _engine;
 
         public CamerasMainViewModel()
         {
@@ -44,6 +46,10 @@ namespace Kataskopeya.ViewModels
             StopSourceCommand = new RelayCommand(StopCamera);
             IpCameraUrl = "http://192.168.127.123:8080/video";
             _motionDetector = new MotionDetector(new TwoFramesDifferenceDetector(), new MotionBorderHighlighting());
+            string recognizerPath = @"recognizer.YAML";
+            _engine = new RecognizerEngine(recognizerPath);
+            _engine.TrainRecognizer();
+
         }
 
         public byte[] MonitoringImage
@@ -100,39 +106,9 @@ namespace Kataskopeya.ViewModels
         private void StartCamera()
         {
             _haarCascade = new CascadeClassifier(@"haarcascade_frontalface_alt_tree.xml");
-            //_timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1), DispatcherPriority.ApplicationIdle,
-            //     (s, ev) => FrameGrabber(), Application.Current.Dispatcher);
-            //_timer.Start();
-
             _videoSource = new MJPEGStream(IpCameraUrl);
-            _videoSource.NewFrame += video_NewFrame;
-            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1), DispatcherPriority.ApplicationIdle,
-                         (s, ev) => _videoSource.Start(), Application.Current.Dispatcher);
-            _timer.Start();
-        }
-
-        private void FrameGrabber()
-        {
-            if (_capture != null)
-            {
-                Mat query = _capture.QueryFrame();
-                if (query != null)
-                {
-                    _currentFrame = query.ToImage<Bgr, byte>();
-                    if (_currentFrame != null)
-                    {
-                        Image<Gray, byte> grayFrame = _currentFrame.Convert<Gray, byte>();
-                        var detectedFaces = _haarCascade.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
-                        foreach (var face in detectedFaces)
-                        {
-                            _currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
-                            _result = _currentFrame.Copy(face).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                        }
-
-                        //MonitoringImage = _currentFrame.ToJpegData();
-                    }
-                }
-            }
+            _videoSource.NewFrame += CaptureFace_Frame;
+            _videoSource.Start();
         }
 
         private void StopCamera()
@@ -140,12 +116,12 @@ namespace Kataskopeya.ViewModels
             if (_videoSource != null && _videoSource.IsRunning)
             {
                 _videoSource.SignalToStop();
-                _videoSource.NewFrame -= video_NewFrame;
+                _videoSource.NewFrame -= CaptureFace_Frame;
             }
             Image = null;
         }
 
-        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        private void CaptureFace_Frame(object sender, NewFrameEventArgs eventArgs)
         {
             try
             {
@@ -170,88 +146,31 @@ namespace Kataskopeya.ViewModels
                     }
                     else
                     {
-
-                        //_motionDetector.ProcessFrame(bitmap);
-                        //bitmapImage = bitmap.ToBitmapImage();
-                        //Image<Bgr, Byte> currentFrame = new Image<Bgr, byte>(bitmap);
-
-                        //if (currentFrame != null)
-                        //{
-                        //    Image<Gray, Byte> grayFrame = = new Image<;
-
-                        //    var detectedFaces = _cascadeClassifier.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
-
-                        //    foreach (var face in detectedFaces)
-                        //    {
-                        //        currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
-                        //    }
-
-                        //}
-
-                        //var cameraCapture = new Capture("http://192.168.127.123:8080/video");
-                        //Mat frame = cameraCapture.QueryFrame();
-
-                        //var grayImage = new Image<Bgr, byte>(frame?.Bitmap);
-                        //var rectangles = _cascadeClassifier.DetectMultiScale(grayImage, 1.2, 1);
-                        //foreach (var rect in rectangles)
-                        //{
-                        //    using (var graphics = Graphics.FromImage(frame?.Bitmap))
-                        //    {
-                        //        using (var pen = new Pen(Color.Red, 1))
-                        //        {
-                        //            graphics.DrawRectangle(pen, rect);
-                        //        }
-                        //    }
-                        //}
-
-
-                        //_currentFrame = new Image<Bgr, byte>(bitmap);
-                        //if (_currentFrame != null)
-                        //{
-                        //    Image<Gray, byte> grayFrame = _currentFrame.Convert<Gray, byte>();
-                        //    var detectedFaces = _haarCascade.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
-                        //    foreach (var face in detectedFaces)
-                        //    {
-                        //        _currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
-                        //        _result = _currentFrame.Copy(face).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                        //    }
-                        //}
-                        //Bitmap newBitmap;
-                        //using (WebClient webClient = new WebClient())
-                        //{
-                        //    byte[] data = webClient.DownloadData("http://192.168.127.123:8080/video");
-                        //    TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-                        //    newBitmap = (Bitmap)tc.ConvertFrom(data);
-                        //}
-
-
-                        var grayImage = new Image<Bgr, byte>(bitmap);
-                        var rectangles = _haarCascade.DetectMultiScale(grayImage, 1.4, 1);
+                        var grayFrame = new Image<Bgr, byte>(bitmap);
+                        var rectangles = _haarCascade.DetectMultiScale(grayFrame, 1.2, 1, System.Drawing.Size.Empty);
 
                         foreach (var rect in rectangles)
                         {
                             using (var graphics = Graphics.FromImage(bitmap))
                             {
-                                using (var pen = new Pen(Color.Red, 10))
+                                using (var pen = new Pen(Color.Yellow, 10))
                                 {
                                     graphics.DrawRectangle(pen, rect);
                                 }
                             }
-                            _result = grayImage.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                            MonitoringImage = grayImage.ToJpegData();
-                        }
+                            _result = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(200, 200, Inter.Cubic);
 
-                        //_currentFrame = new Image<Bgr, byte>(bitmap);
-                        //if (_currentFrame != null)
-                        //{
-                        //    Image<Gray, byte> grayFrame = _currentFrame.Convert<Gray, byte>();
-                        //    var detectedFaces = _haarCascade.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
-                        //    foreach (var face in detectedFaces)
-                        //    {
-                        //        _currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
-                        //        _result = _currentFrame.Copy(face).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                        //    }
-                        //}
+                            int user = _engine.RecognizeUser(_result);
+
+                            if (user == 2)
+                            {
+                                var test = "";
+                            }
+                            else if (user == 1)
+                            {
+                                var test = "";
+                            }
+                        }
 
                         //_motionDetector.ProcessFrame(bitmap);
                         bitmapImage = bitmap.ToBitmapImage();
