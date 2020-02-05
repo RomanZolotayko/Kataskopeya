@@ -2,12 +2,16 @@
 using AForge.Video;
 using AForge.Vision.Motion;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Extensions;
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -25,18 +29,28 @@ namespace Kataskopeya.ViewModels
         private bool _grayscale;
         private bool _thresholded;
         private int _threshold;
-        private CascadeClassifier _cascadeClassifier;
+        private CascadeClassifier _haarCascade;
         private MotionDetector _motionDetector;
+        private DispatcherTimer _timer;
+        private DispatcherTimer _scanner;
+        private Capture _capture;
+        private Image<Bgr, byte> _currentFrame;
+        private Image<Gray, byte> _result;
+        private byte[] _monitoringImage;
 
         public CamerasMainViewModel()
         {
             StartSourceCommand = new RelayCommand(StartCamera);
             StopSourceCommand = new RelayCommand(StopCamera);
             IpCameraUrl = "http://192.168.127.123:8080/video";
-            _cascadeClassifier = new CascadeClassifier("haarcascade_frontalface_default.xml");
             _motionDetector = new MotionDetector(new TwoFramesDifferenceDetector(), new MotionBorderHighlighting());
         }
 
+        public byte[] MonitoringImage
+        {
+            get { return _monitoringImage; }
+            set { Set(ref _monitoringImage, value); }
+        }
         public BitmapImage Image
         {
             get { return _image; }
@@ -85,9 +99,40 @@ namespace Kataskopeya.ViewModels
 
         private void StartCamera()
         {
+            _haarCascade = new CascadeClassifier(@"haarcascade_frontalface_alt_tree.xml");
+            //_timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1), DispatcherPriority.ApplicationIdle,
+            //     (s, ev) => FrameGrabber(), Application.Current.Dispatcher);
+            //_timer.Start();
+
             _videoSource = new MJPEGStream(IpCameraUrl);
             _videoSource.NewFrame += video_NewFrame;
-            _videoSource.Start();
+            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(1), DispatcherPriority.ApplicationIdle,
+                         (s, ev) => _videoSource.Start(), Application.Current.Dispatcher);
+            _timer.Start();
+        }
+
+        private void FrameGrabber()
+        {
+            if (_capture != null)
+            {
+                Mat query = _capture.QueryFrame();
+                if (query != null)
+                {
+                    _currentFrame = query.ToImage<Bgr, byte>();
+                    if (_currentFrame != null)
+                    {
+                        Image<Gray, byte> grayFrame = _currentFrame.Convert<Gray, byte>();
+                        var detectedFaces = _haarCascade.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
+                        foreach (var face in detectedFaces)
+                        {
+                            _currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
+                            _result = _currentFrame.Copy(face).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                        }
+
+                        //MonitoringImage = _currentFrame.ToJpegData();
+                    }
+                }
+            }
         }
 
         private void StopCamera()
@@ -111,6 +156,7 @@ namespace Kataskopeya.ViewModels
                     {
                         using (var grayscaledBitmap = Grayscale.CommonAlgorithms.BT709.Apply(bitmap))
                         {
+
                             bitmapImage = grayscaledBitmap.ToBitmapImage();
                         }
                     }
@@ -158,8 +204,57 @@ namespace Kataskopeya.ViewModels
                         //    }
                         //}
 
+
+                        //_currentFrame = new Image<Bgr, byte>(bitmap);
+                        //if (_currentFrame != null)
+                        //{
+                        //    Image<Gray, byte> grayFrame = _currentFrame.Convert<Gray, byte>();
+                        //    var detectedFaces = _haarCascade.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
+                        //    foreach (var face in detectedFaces)
+                        //    {
+                        //        _currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
+                        //        _result = _currentFrame.Copy(face).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                        //    }
+                        //}
+                        //Bitmap newBitmap;
+                        //using (WebClient webClient = new WebClient())
+                        //{
+                        //    byte[] data = webClient.DownloadData("http://192.168.127.123:8080/video");
+                        //    TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
+                        //    newBitmap = (Bitmap)tc.ConvertFrom(data);
+                        //}
+
+
+                        var grayImage = new Image<Bgr, byte>(bitmap);
+                        var rectangles = _haarCascade.DetectMultiScale(grayImage, 1.4, 1);
+
+                        foreach (var rect in rectangles)
+                        {
+                            using (var graphics = Graphics.FromImage(bitmap))
+                            {
+                                using (var pen = new Pen(Color.Red, 10))
+                                {
+                                    graphics.DrawRectangle(pen, rect);
+                                }
+                            }
+                            _result = grayImage.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                            MonitoringImage = grayImage.ToJpegData();
+                        }
+
+                        //_currentFrame = new Image<Bgr, byte>(bitmap);
+                        //if (_currentFrame != null)
+                        //{
+                        //    Image<Gray, byte> grayFrame = _currentFrame.Convert<Gray, byte>();
+                        //    var detectedFaces = _haarCascade.DetectMultiScale(grayFrame, 1.2, 10, System.Drawing.Size.Empty);
+                        //    foreach (var face in detectedFaces)
+                        //    {
+                        //        _currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 3);
+                        //        _result = _currentFrame.Copy(face).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                        //    }
+                        //}
+
                         //_motionDetector.ProcessFrame(bitmap);
-                        //bitmapImage = frame?.Bitmap.ToBitmapImage();
+                        bitmapImage = bitmap.ToBitmapImage();
                     }
                 }
 
@@ -180,6 +275,7 @@ namespace Kataskopeya.ViewModels
                 _videoSource.SignalToStop();
             }
         }
+
 
     }
 }
