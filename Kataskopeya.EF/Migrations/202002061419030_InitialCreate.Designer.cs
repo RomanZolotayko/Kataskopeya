@@ -13,7 +13,7 @@ namespace Kataskopeya.EF.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202002051317498_InitialCreate"; }
+            get { return "202002061419030_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

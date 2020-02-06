@@ -11,5 +11,7 @@ namespace Kataskopeya.EF
         }
 
         public DbSet<User> Users { get; set; }
+
+
     }
 }

@@ -68,5 +68,6 @@
                 VerticalAlignment="Top" />
         <Image Grid.Column="1" HorizontalAlignment="Left" Height="146" Margin="36,190,0,0" VerticalAlignment="Top" Width="121"
                Source="{Binding MonitoringImage}"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="36,148,0,0" TextWrapping="Wrap" Text="{Binding UserLabel}" VerticalAlignment="Top" Width="90"/>
     </Grid>
 </Window>

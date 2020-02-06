@@ -49,9 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
-    <Compile Include="Migrations\202002051317498_InitialCreate.cs" />
-    <Compile Include="Migrations\202002051317498_InitialCreate.Designer.cs">
-      <DependentUpon>202002051317498_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202002061419030_InitialCreate.cs" />
+    <Compile Include="Migrations\202002061419030_InitialCreate.Designer.cs">
+      <DependentUpon>202002061419030_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\User.cs" />
@@ -62,15 +62,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002051317498_InitialCreate.resx">
-      <DependentUpon>202002051317498_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002061419030_InitialCreate.resx">
+      <DependentUpon>202002061419030_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="bin\Debug\FaceImages\chinese.jpg" />
-    <Content Include="bin\Debug\FaceImages\ducalis.jpg" />
-    <Content Include="bin\Debug\FaceImages\face.jpg" />
-    <Content Include="bin\Debug\FaceImages\myface.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

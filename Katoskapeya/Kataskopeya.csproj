@@ -136,6 +136,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\BitmapExtension.cs" />
+    <Compile Include="Helpers\DatabaseHelper.cs" />
     <Compile Include="Helpers\RecognizerEngine.cs" />
     <Compile Include="ViewModels\CamerasMainViewModel.cs" />
     <Compile Include="Views\CamerasMainView.xaml.cs">
@@ -165,7 +166,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="recognizer.YAML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -182,9 +182,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\CamerasMainView.xaml">
       <SubType>Designer</SubType>
@@ -192,13 +190,58 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="haarcascade_frontalface_default.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="haarcascade_frontalface_alt_tree.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Resource Include="bin\Debug\dataSet\1020test.png" />
+    <Resource Include="bin\Debug\dataSet\1170test.png" />
+    <Resource Include="bin\Debug\dataSet\1200test.png" />
+    <Resource Include="bin\Debug\dataSet\120test.png" />
+    <Resource Include="bin\Debug\dataSet\1230test.png" />
+    <Resource Include="bin\Debug\dataSet\1440test.png" />
+    <Resource Include="bin\Debug\dataSet\1470test.png" />
+    <Resource Include="bin\Debug\dataSet\1530test.png" />
+    <Resource Include="bin\Debug\dataSet\1560test.png" />
+    <Resource Include="bin\Debug\dataSet\1590test.png" />
+    <Resource Include="bin\Debug\dataSet\1620test.png" />
+    <Resource Include="bin\Debug\dataSet\1800test.png" />
+    <Resource Include="bin\Debug\dataSet\180test.png" />
+    <Resource Include="bin\Debug\dataSet\1830test.png" />
+    <Resource Include="bin\Debug\dataSet\1860test.png" />
+    <Resource Include="bin\Debug\dataSet\1890test.png" />
+    <Resource Include="bin\Debug\dataSet\1920test.png" />
+    <Resource Include="bin\Debug\dataSet\2010test.png" />
+    <Resource Include="bin\Debug\dataSet\2040test.png" />
+    <Resource Include="bin\Debug\dataSet\2070test.png" />
+    <Resource Include="bin\Debug\dataSet\2130test.png" />
+    <Resource Include="bin\Debug\dataSet\2160test.png" />
+    <Resource Include="bin\Debug\dataSet\300test.png" />
+    <Resource Include="bin\Debug\dataSet\30test.png" />
+    <Resource Include="bin\Debug\dataSet\330test.png" />
+    <Resource Include="bin\Debug\dataSet\360test.png" />
+    <Resource Include="bin\Debug\dataSet\390test.png" />
+    <Resource Include="bin\Debug\dataSet\480test.png" />
+    <Resource Include="bin\Debug\dataSet\510test.png" />
+    <Resource Include="bin\Debug\dataSet\540test.png" />
+    <Resource Include="bin\Debug\dataSet\570test.png" />
+    <Resource Include="bin\Debug\dataSet\60test.png" />
+    <Resource Include="bin\Debug\dataSet\630test.png" />
+    <Resource Include="bin\Debug\dataSet\660test.png" />
+    <Resource Include="bin\Debug\dataSet\690test.png" />
+    <Resource Include="bin\Debug\dataSet\720test.png" />
+    <Resource Include="bin\Debug\dataSet\810test.png" />
+    <Resource Include="bin\Debug\dataSet\870test.png" />
+    <Resource Include="bin\Debug\dataSet\90test.png" />
+    <Resource Include="bin\Debug\dataSet\930test.png" />
+    <Resource Include="bin\Debug\dataSet\960test.png" />
+    <Resource Include="bin\Debug\dataSet\990test.png" />
     <Content Include="Resources\Emgu.CV.World.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="haarcascade_frontalface_default.xml">
+    <None Include="trainningData.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="x64\cvextern.dll" />

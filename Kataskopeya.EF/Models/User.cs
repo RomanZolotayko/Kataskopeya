@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +14,6 @@ namespace Kataskopeya.EF.Models
 
         public int Age { get; set; }
 
-        public byte[] FaceImage { get; set; }
+        public IEnumerable<byte[]> Faces { get; set; }
     }
 }

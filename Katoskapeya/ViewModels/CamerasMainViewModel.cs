@@ -6,13 +6,14 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Kataskopeya.EF;
 using Kataskopeya.Extensions;
 using Kataskopeya.Helpers;
 using System;
-using System.ComponentModel;
 using System.Drawing;
-using System.IO;
-using System.Net;
+using System.Drawing.Imaging;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -32,24 +33,23 @@ namespace Kataskopeya.ViewModels
         private int _threshold;
         private CascadeClassifier _haarCascade;
         private MotionDetector _motionDetector;
-        private DispatcherTimer _timer;
-        private DispatcherTimer _scanner;
-        private Capture _capture;
-        private Image<Bgr, byte> _currentFrame;
-        private Image<Gray, byte> _result;
+        private Image<Gray, byte> _faceScreenshot;
         private byte[] _monitoringImage;
         private RecognizerEngine _engine;
+        private string _userLabel;
+        private int _index;
+        private ApplicationContext _context;
 
         public CamerasMainViewModel()
         {
+            _context = new ApplicationContext();
             StartSourceCommand = new RelayCommand(StartCamera);
             StopSourceCommand = new RelayCommand(StopCamera);
-            IpCameraUrl = "http://192.168.127.123:8080/video";
+            IpCameraUrl = "http://192.168.128.84:8080/video";
             _motionDetector = new MotionDetector(new TwoFramesDifferenceDetector(), new MotionBorderHighlighting());
-            string recognizerPath = @"recognizer.YAML";
-            _engine = new RecognizerEngine(recognizerPath);
-            _engine.TrainRecognizer();
-
+            _engine = new RecognizerEngine(@"trainningData.YAML");
+            Task.Run(() => _engine.TrainRecognizer()).Wait();
+            _index = 0;
         }
 
         public byte[] MonitoringImage
@@ -57,6 +57,13 @@ namespace Kataskopeya.ViewModels
             get { return _monitoringImage; }
             set { Set(ref _monitoringImage, value); }
         }
+
+        public string UserLabel
+        {
+            get { return _userLabel; }
+            set { Set(ref _userLabel, value); }
+        }
+
         public BitmapImage Image
         {
             get { return _image; }
@@ -146,34 +153,36 @@ namespace Kataskopeya.ViewModels
                     }
                     else
                     {
+
                         var grayFrame = new Image<Bgr, byte>(bitmap);
-                        var rectangles = _haarCascade.DetectMultiScale(grayFrame, 1.2, 1, System.Drawing.Size.Empty);
+                        var rectangles = _haarCascade.DetectMultiScale(grayFrame, 1.8, 1, System.Drawing.Size.Empty);
 
                         foreach (var rect in rectangles)
                         {
                             using (var graphics = Graphics.FromImage(bitmap))
                             {
-                                using (var pen = new Pen(Color.Yellow, 10))
+                                using (var pen = new Pen(Color.Yellow, 2))
                                 {
                                     graphics.DrawRectangle(pen, rect);
                                 }
                             }
-                            _result = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(200, 200, Inter.Cubic);
 
-                            int user = _engine.RecognizeUser(_result);
+                            if (_index % 30 == 0)
+                            {
+                                _faceScreenshot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                                var label = _engine.RecognizeUser(_faceScreenshot);
+                                UserLabel = label.ToString();
+                                //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "test.png", ImageFormat.Png);
+                                var user = _context.Users.FirstOrDefault(x => x.Id == label);
+                                UserLabel = user?.Name;
+                            }
 
-                            if (user == 2)
-                            {
-                                var test = "";
-                            }
-                            else if (user == 1)
-                            {
-                                var test = "";
-                            }
                         }
 
-                        //_motionDetector.ProcessFrame(bitmap);
+                        //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\test.png", ImageFormat.Png);
+
                         bitmapImage = bitmap.ToBitmapImage();
+                        _index++;
                     }
                 }
 

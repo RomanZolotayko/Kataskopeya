@@ -14,7 +14,6 @@ namespace Kataskopeya.EF.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         Age = c.Int(nullable: false),
-                        FaceImage = c.Binary(),
                     })
                 .PrimaryKey(t => t.Id);
             
