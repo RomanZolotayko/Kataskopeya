@@ -35,13 +35,13 @@ namespace Kataskopeya.ViewModels
         private Image<Gray, byte> _faceScreenshot;
         private byte[] _monitoringImage;
         private RecognizerEngine _engine;
-        private string _userLabel;
+        private string _username;
         private int _index;
         private ApplicationContext _context;
 
         public CamerasMainViewModel()
         {
-            UserLabel = "Unknown";
+            Username = "Unknown";
             _context = new ApplicationContext();
             StartSourceCommand = new RelayCommand(StartCamera);
             StopSourceCommand = new RelayCommand(StopCamera);
@@ -58,10 +58,10 @@ namespace Kataskopeya.ViewModels
             set { Set(ref _monitoringImage, value); }
         }
 
-        public string UserLabel
+        public string Username
         {
-            get { return _userLabel; }
-            set { Set(ref _userLabel, value); }
+            get { return _username; }
+            set { Set(ref _username, value); }
         }
 
         public BitmapImage Image
@@ -153,40 +153,38 @@ namespace Kataskopeya.ViewModels
                     }
                     else
                     {
-
                         var grayFrame = new Image<Bgr, byte>(bitmap);
-                        var rectangles = _haarCascade.DetectMultiScale(grayFrame, 1.8, 1, System.Drawing.Size.Empty);
+                        var rectangles = _haarCascade.DetectMultiScale(grayFrame, 1.4, 1, System.Drawing.Size.Empty);
 
                         foreach (var rect in rectangles)
                         {
                             using (var graphics = Graphics.FromImage(bitmap))
                             {
-                                using (var pen = new Pen(Color.Yellow, 2))
+                                using (var pen = new Pen(Color.Red, 2))
                                 {
                                     graphics.DrawRectangle(pen, rect);
                                 }
-                            }
 
-                            if (_index % 30 == 0)
-                            {
-                                _faceScreenshot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                                var label = _engine.RecognizeUser(_faceScreenshot);
-                                UserLabel = label.ToString();
-                                var user = _context.Users.FirstOrDefault(x => x.Id == label);
-                                UserLabel = user == null ? "Unknown" : user.Name;
-                                //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "myPhoto.png", ImageFormat.Png);
+
+                                if (_index % 30 == 0)
+                                {
+                                    _faceScreenshot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                                    var label = _engine.RecognizeUser(_faceScreenshot);
+                                    var user = _context.Users.FirstOrDefault(x => x.Id == label);
+                                    Username = user == null ? "Unknown" : user.Name;
+
+                                    //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "myPhoto.png", ImageFormat.Png);
+                                }
                             }
 
                         }
-
-                        //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\test.png", ImageFormat.Png);
-
                         bitmapImage = bitmap.ToBitmapImage();
+
                         _index++;
                     }
                 }
 
-                bitmapImage.Freeze(); // avoid cross thread operations and prevents leaks
+                bitmapImage.Freeze();
                 Dispatcher.CurrentDispatcher.Invoke(() => Image = bitmapImage);
             }
             catch (Exception exc)

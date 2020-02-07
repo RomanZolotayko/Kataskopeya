@@ -5,69 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kataskopeya.ViewModels"
         mc:Ignorable="d"
-        Title="CamerasMainView" Height="450" Width="800">
+        Title="CamerasMainView" Height="350" Width="600"
+        Background="Transparent">
     <Window.DataContext>
         <local:CamerasMainViewModel/>
     </Window.DataContext>
-   <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="399*" />
-            <ColumnDefinition Width="118*" />
-        </Grid.ColumnDefinitions>
-        <Image Source="{Binding Image}" Margin="10,0,10,70" />
-        <Button Width="67"
-                Height="21"
-                Margin="213,0,0,25"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Command="{Binding StartSourceCommand}"
-                Content="Start" />
-        <Button Width="67"
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="400"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.ColumnSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#7be9f6" Offset="0.0"/>
+                        <GradientStop Color="#f083da" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <StackPanel>
+                <Image Source="{Binding Image}"
+                       Width="350"
+                       Height="230"
+                       Margin="0,20,0,0"
+                       VerticalAlignment="Top"/>
+                <TextBlock Text="{Binding Username}"
+                           FontFamily="Helvetica"
+                           FontSize="20"
+                           Background="Transparent"
+                           Foreground="Black"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <Button Width="140"
+                        Height="40"
+                        Content="Start stream"
+                        Command="{Binding StartSourceCommand}"
+                        Margin="0,20,0,0"/>
+                <Button Width="140"
+                        Height="40"
+                        Content="Stop stream"
+                        Command="{Binding StopSourceCommand}"
+                        Margin="0,20,0,0"/>
+                <Button Width="140"
+                        Height="40"
+                        Content="Grayscale"
+                        Command="{Binding Grayscaled}"
+                        Margin="0,20,0,0"/>
+                <Button Width="140"
+                        Height="40"
+                        Content="Original"
+                        Command="{Binding Original}"
+                        Margin="0,20,0,0"/>
+            </StackPanel>
+
+        </Grid>
+        <!--<Image Source="{Binding Image}" Margin="10,0,10,70" />-->
+        <!--<Button Width="67"
                 Height="21"
                 Margin="296,0,0,25"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Command="{Binding StopSourceCommand}"
-                Content="Stop" />
-        <RadioButton Grid.Column="1"
-                     Width="98"
-                     Height="21"
-                     Margin="10,10,0,0"
-                     HorizontalAlignment="Left"
-                     
-                     VerticalAlignment="Top"
-                     Content="Original"
-                     IsChecked="{Binding Original}" />
-        <RadioButton Grid.Column="1"
-                     Width="98"
-                     Height="21"
-                     x:Name="rbThreshold"
-                     Margin="10,52,0,0"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Content="Threshold"
-                     IsChecked="{Binding Thresholded}" />
-        <RadioButton Grid.Column="1"
-                     Width="98"
-                     Height="21"
-                     Margin="10,31,0,0"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Content="Grayscale"
-                     IsChecked="{Binding Grayscaled}" />
-        <Slider x:Name="slider"
-                Minimum="0"
-                Maximum="256"
-                IsEnabled="{Binding ElementName=rbThreshold, Path=IsChecked}"
-                Value="{Binding Threshold}"
-                Grid.Column="1"
-                Width="98"
-                Height="32"
-                Margin="10,73,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-        <Image Grid.Column="1" HorizontalAlignment="Left" Height="146" Margin="36,190,0,0" VerticalAlignment="Top" Width="121"
-               Source="{Binding MonitoringImage}"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="36,148,0,0" TextWrapping="Wrap" Text="{Binding UserLabel}" VerticalAlignment="Top" Width="90"/>
+                Content="Stop" />-->
     </Grid>
 </Window>

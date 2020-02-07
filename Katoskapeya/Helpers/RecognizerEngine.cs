@@ -30,59 +30,6 @@ namespace Kataskopeya.Helpers
 
         public async void TrainRecognizer()
         {
-            var directiory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "photosDataset");
-            FileInfo[] files = directiory.GetFiles("*.png");
-
-            var myFiles = files.Where(x => x.Name.Contains("myPhoto"));
-
-            var myPhotos = new List<byte[]>();
-
-            foreach (var photo in myFiles)
-            {
-                myPhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"photosDataset/{photo.Name}"));
-            }
-
-            _context.Users.Add(new EF.Models.User
-            {
-                Name = "Roman the Master",
-                Age = 23,
-                Faces = myPhotos
-            });
-
-            //var trumpFiles = files.Where(x => x.Name.Contains("User.2"));
-
-            //var trumpPhotos = new List<byte[]>();
-
-            //foreach (var photo in trumpFiles)
-            //{
-            //    trumpPhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"dataSet/{photo.Name}"));
-            //}
-
-            //_context.Users.Add(new EF.Models.User
-            //{
-            //    Name = "Trump",
-            //    Age = 40,
-            //    Faces = trumpPhotos
-            //});
-
-            //var mePhotos = new List<byte[]>();
-
-            //var meFiles = files.Where(x => x.Name.Contains("me"));
-
-            //foreach (var photo in meFiles)
-            //{
-            //    mePhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"dataSet/{photo.Name}"));
-            //}
-
-            //_context.Users.Add(new EF.Models.User
-            //{
-            //    Name = "Roman",
-            //    Age = 40,
-            //    Faces = mePhotos
-            //});
-
-            _context.SaveChanges();
-
             var users = await _context.Users.ToListAsync();
             if (users != null)
             {

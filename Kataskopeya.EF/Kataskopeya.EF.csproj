@@ -53,6 +53,10 @@
     <Compile Include="Migrations\202002061419030_InitialCreate.Designer.cs">
       <DependentUpon>202002061419030_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002071215224_Password.cs" />
+    <Compile Include="Migrations\202002071215224_Password.Designer.cs">
+      <DependentUpon>202002071215224_Password.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +68,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202002061419030_InitialCreate.resx">
       <DependentUpon>202002061419030_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002071215224_Password.resx">
+      <DependentUpon>202002071215224_Password.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
