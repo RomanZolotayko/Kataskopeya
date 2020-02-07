@@ -30,21 +30,21 @@ namespace Kataskopeya.Helpers
 
         public async void TrainRecognizer()
         {
-            var directiory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "dataSet");
+            var directiory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "photosDataset");
             FileInfo[] files = directiory.GetFiles("*.png");
 
-            var myFiles = files.Where(x => x.Name.Contains("test"));
+            var myFiles = files.Where(x => x.Name.Contains("myPhoto"));
 
             var myPhotos = new List<byte[]>();
 
             foreach (var photo in myFiles)
             {
-                myPhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"dataSet/{photo.Name}"));
+                myPhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"photosDataset/{photo.Name}"));
             }
 
             _context.Users.Add(new EF.Models.User
             {
-                Name = "Master Roman",
+                Name = "Roman the Master",
                 Age = 23,
                 Faces = myPhotos
             });

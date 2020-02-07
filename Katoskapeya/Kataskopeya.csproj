@@ -93,6 +93,12 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.2.920, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignColors.1.2.2\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=3.0.1.920, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignThemes.3.0.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>packages\OpenTK.1.1.2225.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
@@ -139,8 +145,12 @@
     <Compile Include="Helpers\DatabaseHelper.cs" />
     <Compile Include="Helpers\RecognizerEngine.cs" />
     <Compile Include="ViewModels\CamerasMainViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Views\CamerasMainView.xaml.cs">
       <DependentUpon>CamerasMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginMainView.xaml.cs">
+      <DependentUpon>LoginMainView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +192,15 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\CamerasMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,59 +212,222 @@
     <None Include="haarcascade_frontalface_alt_tree.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="bin\Debug\dataSet\1020test.png" />
-    <Resource Include="bin\Debug\dataSet\1170test.png" />
-    <Resource Include="bin\Debug\dataSet\1200test.png" />
-    <Resource Include="bin\Debug\dataSet\120test.png" />
-    <Resource Include="bin\Debug\dataSet\1230test.png" />
-    <Resource Include="bin\Debug\dataSet\1440test.png" />
-    <Resource Include="bin\Debug\dataSet\1470test.png" />
-    <Resource Include="bin\Debug\dataSet\1530test.png" />
-    <Resource Include="bin\Debug\dataSet\1560test.png" />
-    <Resource Include="bin\Debug\dataSet\1590test.png" />
-    <Resource Include="bin\Debug\dataSet\1620test.png" />
-    <Resource Include="bin\Debug\dataSet\1800test.png" />
-    <Resource Include="bin\Debug\dataSet\180test.png" />
-    <Resource Include="bin\Debug\dataSet\1830test.png" />
-    <Resource Include="bin\Debug\dataSet\1860test.png" />
-    <Resource Include="bin\Debug\dataSet\1890test.png" />
-    <Resource Include="bin\Debug\dataSet\1920test.png" />
-    <Resource Include="bin\Debug\dataSet\2010test.png" />
-    <Resource Include="bin\Debug\dataSet\2040test.png" />
-    <Resource Include="bin\Debug\dataSet\2070test.png" />
-    <Resource Include="bin\Debug\dataSet\2130test.png" />
-    <Resource Include="bin\Debug\dataSet\2160test.png" />
-    <Resource Include="bin\Debug\dataSet\300test.png" />
-    <Resource Include="bin\Debug\dataSet\30test.png" />
-    <Resource Include="bin\Debug\dataSet\330test.png" />
-    <Resource Include="bin\Debug\dataSet\360test.png" />
-    <Resource Include="bin\Debug\dataSet\390test.png" />
-    <Resource Include="bin\Debug\dataSet\480test.png" />
-    <Resource Include="bin\Debug\dataSet\510test.png" />
-    <Resource Include="bin\Debug\dataSet\540test.png" />
-    <Resource Include="bin\Debug\dataSet\570test.png" />
-    <Resource Include="bin\Debug\dataSet\60test.png" />
-    <Resource Include="bin\Debug\dataSet\630test.png" />
-    <Resource Include="bin\Debug\dataSet\660test.png" />
-    <Resource Include="bin\Debug\dataSet\690test.png" />
-    <Resource Include="bin\Debug\dataSet\720test.png" />
-    <Resource Include="bin\Debug\dataSet\810test.png" />
-    <Resource Include="bin\Debug\dataSet\870test.png" />
-    <Resource Include="bin\Debug\dataSet\90test.png" />
-    <Resource Include="bin\Debug\dataSet\930test.png" />
-    <Resource Include="bin\Debug\dataSet\960test.png" />
-    <Resource Include="bin\Debug\dataSet\990test.png" />
+    <None Include="photosDataset\0myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1020myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1050myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1080myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1110myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1140myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1170myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1200myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\120myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1230myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1260myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1290myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1320myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1350myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1380myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1470myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1500myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\150myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1530myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1560myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1590myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1620myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1770myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1800myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\180myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1830myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1860myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1890myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1920myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1950myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\1980myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2100myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\210myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2130myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2160myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2220myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2250myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2280myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2370myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2400myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\240myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2430myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\2460myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\30myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\390myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\420myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\450myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\480myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\510myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\540myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\570myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\600myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\60myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\630myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\660myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\690myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\720myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\750myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\780myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\810myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\840myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\870myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\900myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\90myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\930myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\960myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="photosDataset\990myPhoto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Emgu.CV.World.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="trainningData.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="x64\cvextern.dll" />
+    <None Include="x64\cvextern.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="x64\msvcp120.dll" />
     <Content Include="x64\msvcr120.dll" />
     <Content Include="x64\opencv_ffmpeg310_64.dll" />
-    <Content Include="x86\cvextern.dll" />
+    <None Include="x86\cvextern.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="x86\msvcp120.dll" />
     <Content Include="x86\msvcr120.dll" />
     <Content Include="x86\opencv_ffmpeg310.dll" />
@@ -263,4 +442,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets'))" />
+  </Target>
 </Project>

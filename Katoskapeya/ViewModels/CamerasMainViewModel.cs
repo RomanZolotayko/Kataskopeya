@@ -11,7 +11,6 @@ using Kataskopeya.Extensions;
 using Kataskopeya.Helpers;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,10 +41,11 @@ namespace Kataskopeya.ViewModels
 
         public CamerasMainViewModel()
         {
+            UserLabel = "Unknown";
             _context = new ApplicationContext();
             StartSourceCommand = new RelayCommand(StartCamera);
             StopSourceCommand = new RelayCommand(StopCamera);
-            IpCameraUrl = "http://192.168.128.84:8080/video";
+            IpCameraUrl = "http://192.168.127.123:8080/video";
             _motionDetector = new MotionDetector(new TwoFramesDifferenceDetector(), new MotionBorderHighlighting());
             _engine = new RecognizerEngine(@"trainningData.YAML");
             Task.Run(() => _engine.TrainRecognizer()).Wait();
@@ -172,9 +172,9 @@ namespace Kataskopeya.ViewModels
                                 _faceScreenshot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
                                 var label = _engine.RecognizeUser(_faceScreenshot);
                                 UserLabel = label.ToString();
-                                //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "test.png", ImageFormat.Png);
                                 var user = _context.Users.FirstOrDefault(x => x.Id == label);
-                                UserLabel = user?.Name;
+                                UserLabel = user == null ? "Unknown" : user.Name;
+                                //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "myPhoto.png", ImageFormat.Png);
                             }
 
                         }
