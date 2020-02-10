@@ -3,7 +3,6 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
 using Kataskopeya.EF;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
@@ -16,7 +15,7 @@ namespace Kataskopeya.Helpers
     {
         private FaceRecognizer faceRecognizer;
         private string recognizerPath;
-        private ApplicationContext _context;
+        private KataskopeyaContext _context;
 
         public RecognizerEngine(string recognizerFilePath)
         {
@@ -25,7 +24,7 @@ namespace Kataskopeya.Helpers
             //recognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
             //recognizer = new FisherFaceRecognizer(0, 3500);//4000
 
-            _context = new ApplicationContext();
+            _context = new KataskopeyaContext();
         }
 
         public async void TrainRecognizer()
@@ -36,12 +35,16 @@ namespace Kataskopeya.Helpers
                 var faceImages = new List<Image<Gray, byte>>();
                 var faceLabels = new List<int>();
 
+                var dbUserPhotos = await _context.UserFaceImages.Include(ufi => ufi.FaceImage).ToListAsync();
+
                 foreach (var user in users)
                 {
+                    var userPhotos = dbUserPhotos.Where(ufi => ufi.UserId == user.Id).Select(ufi => ufi.FaceImage);
+
                     Stream stream = new MemoryStream();
-                    foreach (var face in user.Faces)
+                    foreach (var item in userPhotos)
                     {
-                        stream.Write(face, 0, face.Length);
+                        stream.Write(item.Face, 0, item.Face.Length);
                         var faceImage = new Image<Gray, byte>(new Bitmap(stream));
                         faceImages.Add(faceImage.Resize(100, 100, Inter.Cubic));
                         faceLabels.Add(user.Id);

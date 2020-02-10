@@ -13,13 +13,13 @@ namespace Kataskopeya.ViewModels
 {
     public class LoginViewModel : ObservableObject, IDisposable
     {
-        private readonly ApplicationContext _context;
+        private readonly KataskopeyaContext _context;
         private string _username;
         private ICommand _loginCommand;
 
         public LoginViewModel()
         {
-            _context = new ApplicationContext();
+            _context = new KataskopeyaContext();
         }
 
         public ICommand Login
@@ -52,7 +52,7 @@ namespace Kataskopeya.ViewModels
 
             if (user == null)
             {
-                MessageBox.Show("User no found");
+                MessageBox.Show("User not found");
             }
 
             var camerasView = new CamerasMainView();

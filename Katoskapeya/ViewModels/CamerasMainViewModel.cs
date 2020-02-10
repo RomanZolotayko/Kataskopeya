@@ -1,18 +1,11 @@
 ﻿using AForge.Imaging.Filters;
 using AForge.Video;
-using AForge.Vision.Motion;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
-using Emgu.CV.Structure;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using Kataskopeya.EF;
 using Kataskopeya.Extensions;
-using Kataskopeya.Helpers;
+using Kataskopeya.Services;
 using System;
 using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -23,33 +16,30 @@ namespace Kataskopeya.ViewModels
     public class CamerasMainViewModel : ObservableObject, IDisposable
     {
         private BitmapImage _image;
-        private string _ipCameraUrl;
         private IVideoSource _videoSource;
-        private bool _isIpCameraSource;
         private bool _original;
         private bool _grayscale;
-        private bool _thresholded;
-        private int _threshold;
-        private CascadeClassifier _haarCascade;
-        private MotionDetector _motionDetector;
-        private Image<Gray, byte> _faceScreenshot;
         private byte[] _monitoringImage;
-        private RecognizerEngine _engine;
         private string _username;
-        private int _index;
-        private ApplicationContext _context;
+        private int _fpsIndexer;
+
+        private readonly VideoRecordingService _videoRecordingService;
+        private readonly MotionDetectionService _motionDetectionService;
+        private readonly FaceAnalyzerService _faceAnalyzerService;
 
         public CamerasMainViewModel()
         {
-            Username = "Unknown";
-            _context = new ApplicationContext();
+            _videoRecordingService = new VideoRecordingService();
+            _motionDetectionService = new MotionDetectionService();
+            _faceAnalyzerService = new FaceAnalyzerService();
+            SetUpRecordingEngine();
             StartSourceCommand = new RelayCommand(StartCamera);
             StopSourceCommand = new RelayCommand(StopCamera);
-            IpCameraUrl = "http://192.168.127.123:8080/video";
-            _motionDetector = new MotionDetector(new TwoFramesDifferenceDetector(), new MotionBorderHighlighting());
-            _engine = new RecognizerEngine(@"trainningData.YAML");
-            Task.Run(() => _engine.TrainRecognizer()).Wait();
-            _index = 0;
+            MakeGrayscale = new RelayCommand(ApplyGrayscale);
+            MakeOriginal = new RelayCommand(ApplyOriginal);
+            StopRecordVideoSource = new RelayCommand(StopRecord);
+            IpCameraUrl = "http://192.168.128.82:8080/video";
+            _fpsIndexer = 0;
         }
 
         public byte[] MonitoringImage
@@ -82,37 +72,44 @@ namespace Kataskopeya.ViewModels
             set { Set(ref _original, value); }
         }
 
-        public bool Thresholded
-        {
-            get { return _thresholded; }
-            set { Set(ref _thresholded, value); }
-        }
-
-        public int Threshold
-        {
-            get { return _threshold; }
-            set { Set(ref _threshold, value); }
-        }
-
-        public bool IsIpCameraSource
-        {
-            get { return _isIpCameraSource; }
-            set { Set(ref _isIpCameraSource, value); }
-        }
-
-        public string IpCameraUrl
-        {
-            get { return _ipCameraUrl; }
-            set { Set(ref _ipCameraUrl, value); }
-        }
+        public string IpCameraUrl { get; set; }
 
         public ICommand StartSourceCommand { get; private set; }
 
         public ICommand StopSourceCommand { get; private set; }
 
+        public ICommand MakeGrayscale { get; private set; }
+
+        public ICommand MakeOriginal { get; private set; }
+
+        public ICommand StopRecordVideoSource { get; private set; }
+
+        private void ApplyGrayscale()
+        {
+            if (Grayscaled)
+            {
+                Grayscaled = false;
+            }
+            else
+            {
+                Grayscaled = true;
+            }
+        }
+
+        private void ApplyOriginal()
+        {
+            if (Original)
+            {
+                Original = false;
+            }
+            else
+            {
+                Original = true;
+            }
+        }
+
         private void StartCamera()
         {
-            _haarCascade = new CascadeClassifier(@"haarcascade_frontalface_alt_tree.xml");
             _videoSource = new MJPEGStream(IpCameraUrl);
             _videoSource.NewFrame += CaptureFace_Frame;
             _videoSource.Start();
@@ -126,6 +123,16 @@ namespace Kataskopeya.ViewModels
                 _videoSource.NewFrame -= CaptureFace_Frame;
             }
             Image = null;
+        }
+
+        private void SetUpRecordingEngine()
+        {
+            _videoRecordingService.SetUpRecordingEngine(480, 360);
+        }
+
+        private void StopRecord()
+        {
+            _videoRecordingService.StopVideoRecording();
         }
 
         private void CaptureFace_Frame(object sender, NewFrameEventArgs eventArgs)
@@ -143,44 +150,13 @@ namespace Kataskopeya.ViewModels
                             bitmapImage = grayscaledBitmap.ToBitmapImage();
                         }
                     }
-                    else if (Thresholded)
-                    {
-                        using (var grayscaledBitmap = Grayscale.CommonAlgorithms.BT709.Apply(bitmap))
-                        using (var thresholdedBitmap = new Threshold(Threshold).Apply(grayscaledBitmap))
-                        {
-                            bitmapImage = thresholdedBitmap.ToBitmapImage();
-                        }
-                    }
                     else
                     {
-                        var grayFrame = new Image<Bgr, byte>(bitmap);
-                        var rectangles = _haarCascade.DetectMultiScale(grayFrame, 1.4, 1, System.Drawing.Size.Empty);
-
-                        foreach (var rect in rectangles)
-                        {
-                            using (var graphics = Graphics.FromImage(bitmap))
-                            {
-                                using (var pen = new Pen(Color.Red, 2))
-                                {
-                                    graphics.DrawRectangle(pen, rect);
-                                }
-
-
-                                if (_index % 30 == 0)
-                                {
-                                    _faceScreenshot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                                    var label = _engine.RecognizeUser(_faceScreenshot);
-                                    var user = _context.Users.FirstOrDefault(x => x.Id == label);
-                                    Username = user == null ? "Unknown" : user.Name;
-
-                                    //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "myPhoto.png", ImageFormat.Png);
-                                }
-                            }
-
-                        }
+                        //_motionDetectionService.Detect(bitmap);
+                        //_faceAnalyzerService.Analyze(bitmap, _fpsIndexer);
+                        //_videoRecordingService.StartVideoRecording(bitmap);
                         bitmapImage = bitmap.ToBitmapImage();
-
-                        _index++;
+                        _fpsIndexer++;
                     }
                 }
 

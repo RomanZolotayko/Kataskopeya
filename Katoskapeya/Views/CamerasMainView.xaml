@@ -55,12 +55,17 @@
                 <Button Width="140"
                         Height="40"
                         Content="Grayscale"
-                        Command="{Binding Grayscaled}"
+                        Command="{Binding MakeGrayscale}"
                         Margin="0,20,0,0"/>
                 <Button Width="140"
                         Height="40"
                         Content="Original"
-                        Command="{Binding Original}"
+                        Command="{Binding MakeOriginal}"
+                        Margin="0,20,0,0"/>
+                <Button Width="140"
+                        Height="40"
+                        Content="Start recording"
+                        Command="{Binding RecordVideoSource}"
                         Margin="0,20,0,0"/>
             </StackPanel>
 

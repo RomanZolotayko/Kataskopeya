@@ -5,14 +5,14 @@ namespace Kataskopeya.EF.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Kataskopeya.EF.ApplicationContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Kataskopeya.EF.KataskopeyaContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Kataskopeya.EF.ApplicationContext context)
+        protected override void Seed(Kataskopeya.EF.KataskopeyaContext context)
         {
             //  This method will be called after migrating to the latest version.
 
