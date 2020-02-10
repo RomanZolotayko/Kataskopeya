@@ -7,7 +7,7 @@
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
         mc:Ignorable="d"
-        Title="ArchiveView" Height="450" Width="700"
+        Title="ArchiveView" Height="550" Width="700"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None"
@@ -29,6 +29,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>
+                <RowDefinition Height="300"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -74,8 +75,6 @@
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
                                                Foreground="White" Height="38" Width="40"/>
-
-
                 </StackPanel>
             </StackPanel>
 
@@ -85,7 +84,11 @@
                          FontSize="22"
                          FontWeight="Light"
                          ItemsSource="{Binding FileNames}"
-                         Height="200"/>
+                         Height="300"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3">
+                <TextBlock Text="asdasd"/>
             </StackPanel>
         </Grid>
 

@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Extensions;
 using Kataskopeya.Services;
+using Kataskopeya.Views;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -37,6 +38,7 @@ namespace Kataskopeya.ViewModels
             StopSourceCommand = new RelayCommand(StopCamera);
             MakeGrayscale = new RelayCommand(ApplyGrayscale);
             MakeOriginal = new RelayCommand(ApplyOriginal);
+            PreviousWindow = new RelayCommand(GetToPreviousWindow);
             StopRecordVideoSource = new RelayCommand(StopRecord);
             IpCameraUrl = "http://192.168.128.82:8080/video";
             _fpsIndexer = 0;
@@ -83,6 +85,10 @@ namespace Kataskopeya.ViewModels
         public ICommand MakeOriginal { get; private set; }
 
         public ICommand StopRecordVideoSource { get; private set; }
+
+        public ICommand PreviousWindow { get; private set; }
+
+        public Action CloseAction { get; set; }
 
         private void ApplyGrayscale()
         {
@@ -133,6 +139,13 @@ namespace Kataskopeya.ViewModels
         private void StopRecord()
         {
             _videoRecordingService.StopVideoRecording();
+        }
+
+        private void GetToPreviousWindow()
+        {
+            var menu = new MenuView();
+            menu.Show();
+            CloseAction();
         }
 
         private void CaptureFace_Frame(object sender, NewFrameEventArgs eventArgs)
