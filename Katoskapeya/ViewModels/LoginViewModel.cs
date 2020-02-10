@@ -4,7 +4,6 @@ using Kataskopeya.EF;
 using Kataskopeya.Views;
 using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,6 +29,8 @@ namespace Kataskopeya.ViewModels
             }
         }
 
+        public Action CloseAction { get; set; }
+
         public string Username
         {
             get { return _username; }
@@ -45,18 +46,21 @@ namespace Kataskopeya.ViewModels
 
             if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(Username))
             {
-                MessageBox.Show("Login error");
+                MessageBox.Show("Fields couldn't be empty.");
+                return;
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == Username && u.Password == Password);
 
             if (user == null)
             {
-                MessageBox.Show("User not found");
+                MessageBox.Show("Email or password incorrect.");
+                return;
             }
 
-            var camerasView = new CamerasMainView();
+            var camerasView = new MenuView();
             camerasView.Show();
+            CloseAction();
         }
 
         public void Dispose()

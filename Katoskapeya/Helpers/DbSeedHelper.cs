@@ -1,4 +1,5 @@
-﻿using Kataskopeya.EF;
+﻿using Kataskopeya.Consts;
+using Kataskopeya.EF;
 using Kataskopeya.EF.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Kataskopeya.Helpers
         {
             if (!context.Users.Any())
             {
-                var directiory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "photosDataset");
+                var directiory = new DirectoryInfo(FileSystemPaths.DebugFolder + "photosDataset");
                 var files = directiory.GetFiles("*.png");
 
                 var myFiles = files.Where(x => x.Name.Contains("myPhoto"));

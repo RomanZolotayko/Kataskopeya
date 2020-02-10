@@ -45,7 +45,7 @@
 
 
 
-            <StackPanel Grid.Row="1" >
+            <StackPanel Grid.Row="1" Margin="0,20,0,0">
                 <StackPanel Orientation="Horizontal">
                     <TextBox FontFamily="Helvetica"
                             FontWeight="Light"
