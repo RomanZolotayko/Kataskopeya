@@ -3,10 +3,13 @@ using AForge.Video;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Extensions;
+using Kataskopeya.Models;
 using Kataskopeya.Services;
 using Kataskopeya.Views;
 using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -17,16 +20,17 @@ namespace Kataskopeya.ViewModels
     public class CamerasMainViewModel : ObservableObject, IDisposable
     {
         private BitmapImage _image;
+        private ObservableCollection<MonitoringImage> _monitoringImages;
         private IVideoSource _videoSource;
         private bool _original;
         private bool _grayscale;
-        private byte[] _monitoringImage;
         private string _username;
         private int _fpsIndexer;
-
+        private ObservableCollection<CameraScreen> _ipCameraUrls;
         private readonly VideoRecordingService _videoRecordingService;
         private readonly MotionDetectionService _motionDetectionService;
         private readonly FaceAnalyzerService _faceAnalyzerService;
+        private int _internalIndexer;
 
         public CamerasMainViewModel()
         {
@@ -36,18 +40,21 @@ namespace Kataskopeya.ViewModels
             SetUpRecordingEngine();
             StartSourceCommand = new RelayCommand(StartCamera);
             StopSourceCommand = new RelayCommand(StopCamera);
-            MakeGrayscale = new RelayCommand(ApplyGrayscale);
-            MakeOriginal = new RelayCommand(ApplyOriginal);
-            PreviousWindow = new RelayCommand(GetToPreviousWindow);
-            StopRecordVideoSource = new RelayCommand(StopRecord);
-            IpCameraUrl = "http://192.168.128.82:8080/video";
+            MakeGrayscaleCommand = new RelayCommand(ApplyGrayscale);
+            MakeOriginalCommand = new RelayCommand(ApplyOriginal);
+            PreviousWindowCommand = new RelayCommand(GetToPreviousWindow);
+            StopRecordVideoSourceCommand = new RelayCommand(StopRecord);
+            AddNewCameraCommand = new RelayCommand(AddNewCamera);
+            IpCameraUrl = "http://109.7.231.170:8082/mjpg/video.mjpg";
+            IpCameraUrls = new ObservableCollection<CameraScreen>();
+            MonitoringImages = new ObservableCollection<MonitoringImage>();
             _fpsIndexer = 0;
         }
 
-        public byte[] MonitoringImage
+        public ObservableCollection<CameraScreen> IpCameraUrls
         {
-            get { return _monitoringImage; }
-            set { Set(ref _monitoringImage, value); }
+            get { return _ipCameraUrls; }
+            set { Set(ref _ipCameraUrls, value); }
         }
 
         public string Username
@@ -60,6 +67,12 @@ namespace Kataskopeya.ViewModels
         {
             get { return _image; }
             set { Set(ref _image, value); }
+        }
+
+        public ObservableCollection<MonitoringImage> MonitoringImages
+        {
+            get { return _monitoringImages; }
+            set { Set(ref _monitoringImages, value); }
         }
 
         public bool Grayscaled
@@ -80,13 +93,15 @@ namespace Kataskopeya.ViewModels
 
         public ICommand StopSourceCommand { get; private set; }
 
-        public ICommand MakeGrayscale { get; private set; }
+        public ICommand MakeGrayscaleCommand { get; private set; }
 
-        public ICommand MakeOriginal { get; private set; }
+        public ICommand MakeOriginalCommand { get; private set; }
 
-        public ICommand StopRecordVideoSource { get; private set; }
+        public ICommand StopRecordVideoSourceCommand { get; private set; }
 
-        public ICommand PreviousWindow { get; private set; }
+        public ICommand PreviousWindowCommand { get; private set; }
+
+        public ICommand AddNewCameraCommand { get; private set; }
 
         public Action CloseAction { get; set; }
 
@@ -116,7 +131,14 @@ namespace Kataskopeya.ViewModels
 
         private void StartCamera()
         {
-            _videoSource = new MJPEGStream(IpCameraUrl);
+            _videoSource = new MJPEGStream("http://158.58.130.148:80/mjpg/video.mjpg");
+            _videoSource.NewFrame += CaptureFace_Frame;
+            _videoSource.Start();
+        }
+
+        private void StartCameras()
+        {
+            _videoSource = new MJPEGStream(IpCameraUrls.Last().ImageSourcePath);
             _videoSource.NewFrame += CaptureFace_Frame;
             _videoSource.Start();
         }
@@ -148,8 +170,25 @@ namespace Kataskopeya.ViewModels
             CloseAction();
         }
 
+        public void AddNewCamera()
+        {
+            var newCameraView = new NewCameraView();
+            newCameraView.ShowDialog();
+            var url = ((NewCameraViewModel)newCameraView.DataContext).NewIpCameraUrl;
+            IpCameraUrls.Add(new CameraScreen { ImageSourcePath = url });
+            RaisePropertyChanged("IpCameraUrls");
+
+            var indexer = 0;
+            indexer++;
+            var monitoringImage = new MonitoringImage(indexer, url);
+            MonitoringImages.Add(monitoringImage);
+
+            StartCameras();
+        }
+
         private void CaptureFace_Frame(object sender, NewFrameEventArgs eventArgs)
         {
+            var monitoringImage = MonitoringImages.FirstOrDefault(mi => mi.Source == ((MJPEGStream)sender).Source);
             try
             {
                 BitmapImage bitmapImage;
@@ -174,7 +213,7 @@ namespace Kataskopeya.ViewModels
                 }
 
                 bitmapImage.Freeze();
-                Dispatcher.CurrentDispatcher.Invoke(() => Image = bitmapImage);
+                Dispatcher.CurrentDispatcher.Invoke(() => monitoringImage.Image = bitmapImage);
             }
             catch (Exception exc)
             {

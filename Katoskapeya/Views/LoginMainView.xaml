@@ -22,7 +22,6 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-
             <Border CornerRadius="10" Grid.RowSpan="2">
                 <Border.Background>
                     <LinearGradientBrush>
@@ -31,7 +30,6 @@
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
-
 
             <StackPanel VerticalAlignment="Center">
                 <Image Source="/Images/guard.png" Width="200"/>
@@ -42,8 +40,6 @@
                           Foreground="White"
                           HorizontalAlignment="Center"/>
             </StackPanel>
-
-
 
             <StackPanel Grid.Row="1" Margin="0,20,0,0">
                 <StackPanel Orientation="Horizontal">
@@ -70,8 +66,6 @@
                        Background="White"
                        Opacity="0.5"/>
 
-
-
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                     <PasswordBox FontFamily="Helvetica"
                             FontWeight="Light"
@@ -96,7 +90,6 @@
                        Height="2"
                        Background="White"
                        Opacity="0.5"/>
-
 
                 <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
                     <Button Width="100"

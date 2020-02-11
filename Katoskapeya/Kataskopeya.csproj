@@ -224,13 +224,16 @@
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Helpers\DbSeedHelper.cs" />
     <Compile Include="Helpers\RecognizerEngine.cs" />
+    <Compile Include="Models\MonitoringImage.cs" />
     <Compile Include="Services\FaceAnalyzerService.cs" />
     <Compile Include="Services\MotionDetectionService.cs" />
     <Compile Include="Services\VideoRecordingService.cs" />
     <Compile Include="ViewModels\ArchieveViewModel.cs" />
+    <Compile Include="Models\CameraScreen.cs" />
     <Compile Include="ViewModels\CamerasMainViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="ViewModels\NewCameraViewModel.cs" />
     <Compile Include="Views\ArchiveView.xaml.cs">
       <DependentUpon>ArchiveView.xaml</DependentUpon>
     </Compile>
@@ -242,6 +245,9 @@
     </Compile>
     <Compile Include="Views\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewCameraView.xaml.cs">
+      <DependentUpon>NewCameraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScanView.xaml.cs">
       <DependentUpon>ScanView.xaml</DependentUpon>
@@ -310,6 +316,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewCameraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
