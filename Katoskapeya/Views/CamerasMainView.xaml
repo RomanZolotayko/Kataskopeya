@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Kataskopeya.ViewModels"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
         mc:Ignorable="d"
-        Title="CamerasMainView" Height="1500" Width="800"
-        Background="Transparent">
+        Background="Transparent"
+        WindowState="Maximized" WindowStyle="None"
+        ResizeMode="NoResize">
     <Window.DataContext>
         <local:CamerasMainViewModel/>
     </Window.DataContext>
@@ -15,15 +16,14 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>
-                <RowDefinition  Height="1000"/>
-                <RowDefinition />
+                <RowDefinition Height="{Binding DisplayHeight}"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.RowSpan="3">
+            <Border CornerRadius="10" Grid.RowSpan="2">
                 <Border.Background>
                     <LinearGradientBrush>
-                        <GradientStop Color="#7be9f6" Offset="0.0"/>
-                        <GradientStop Color="#f083da" Offset="1"/>
+                        <GradientStop Color="#1D4350" Offset="0.0"/>
+                        <GradientStop Color="#A43931" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
@@ -64,12 +64,30 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Margin="10">
-                <ListBox ItemsSource="{Binding MonitoringImages}">
+            <StackPanel Width="{Binding DisplayWidth}" Grid.Row="1" Margin="10">
+                <ListBox Height="1000"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ItemsSource="{Binding MonitoringImages}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="5">
-                                <Image Width="100" Height="100" Source="{Binding Image}"/>
+                            <StackPanel
+                                Width="{Binding Width}"
+                                Height="{Binding Height}">
+                                <Image Source="{Binding Image}">
+                                    <Image.InputBindings>
+                                        <MouseBinding MouseAction="LeftDoubleClick" 
+                                                      Command="{Binding OpenCameraDetailsCommand}"
+                                                      CommandParameter="{Binding Url}"/>
+                                    </Image.InputBindings>
+                                </Image>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -77,13 +95,5 @@
             </StackPanel>
 
         </Grid>
-        <!--<Image Source="{Binding Image}" Margin="10,0,10,70" />-->
-        <!--<Button Width="67"
-                Height="21"
-                Margin="296,0,0,25"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Command="{Binding StopSourceCommand}"
-                Content="Stop" />-->
     </Grid>
 </Window>

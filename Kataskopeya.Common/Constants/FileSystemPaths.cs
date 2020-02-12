@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kataskopeya.Consts
+namespace Kataskopeya.Common.Constants
 {
     public static class FileSystemPaths
     {

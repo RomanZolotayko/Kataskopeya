@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kataskopeya", "Kataskopeya.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kataskopeya.EF", "..\Kataskopeya.EF\Kataskopeya.EF.csproj", "{3E981CB1-9FCD-4FD2-B181-E8872343B5CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kataskopeya.Common", "..\Kataskopeya.Common\Kataskopeya.Common.csproj", "{57F6BD32-ACBE-40E6-A1CC-F3FF28546B17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3E981CB1-9FCD-4FD2-B181-E8872343B5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E981CB1-9FCD-4FD2-B181-E8872343B5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E981CB1-9FCD-4FD2-B181-E8872343B5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57F6BD32-ACBE-40E6-A1CC-F3FF28546B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F6BD32-ACBE-40E6-A1CC-F3FF28546B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F6BD32-ACBE-40E6-A1CC-F3FF28546B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F6BD32-ACBE-40E6-A1CC-F3FF28546B17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

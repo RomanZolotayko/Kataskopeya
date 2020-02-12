@@ -220,22 +220,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\BaseCommandHandler.cs" />
-    <Compile Include="Consts\FileSystemPaths.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Helpers\DbSeedHelper.cs" />
     <Compile Include="Helpers\RecognizerEngine.cs" />
     <Compile Include="Models\MonitoringImage.cs" />
+    <Compile Include="Services\CamerasService.cs" />
     <Compile Include="Services\FaceAnalyzerService.cs" />
     <Compile Include="Services\MotionDetectionService.cs" />
     <Compile Include="Services\VideoRecordingService.cs" />
     <Compile Include="ViewModels\ArchieveViewModel.cs" />
     <Compile Include="Models\CameraScreen.cs" />
+    <Compile Include="ViewModels\CameraDetailsViewModel.cs" />
     <Compile Include="ViewModels\CamerasMainViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\NewCameraViewModel.cs" />
     <Compile Include="Views\ArchiveView.xaml.cs">
       <DependentUpon>ArchiveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CameraDetailsView.xaml.cs">
+      <DependentUpon>CameraDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CamerasMainView.xaml.cs">
       <DependentUpon>CamerasMainView.xaml</DependentUpon>
@@ -304,6 +308,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ArchiveView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CameraDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -705,6 +713,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kataskopeya.Common\Kataskopeya.Common.csproj">
+      <Project>{57F6BD32-ACBE-40E6-A1CC-F3FF28546B17}</Project>
+      <Name>Kataskopeya.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kataskopeya.EF\Kataskopeya.EF.csproj">
       <Project>{3E981CB1-9FCD-4FD2-B181-E8872343B5CE}</Project>
       <Name>Kataskopeya.EF</Name>

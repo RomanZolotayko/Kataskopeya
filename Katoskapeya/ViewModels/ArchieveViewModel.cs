@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using Kataskopeya.Consts;
+using Kataskopeya.Common.Constants;
 using Kataskopeya.Views;
 using System;
 using System.Collections.Generic;

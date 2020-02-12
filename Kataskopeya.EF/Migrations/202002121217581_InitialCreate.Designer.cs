@@ -7,13 +7,13 @@ namespace Kataskopeya.EF.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class AddedManyToManyRelationship : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedManyToManyRelationship));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "202002100953030_AddedManyToManyRelationship"; }
+            get { return "202002121217581_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

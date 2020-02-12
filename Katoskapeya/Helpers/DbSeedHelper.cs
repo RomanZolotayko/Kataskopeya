@@ -1,4 +1,4 @@
-﻿using Kataskopeya.Consts;
+﻿using Kataskopeya.Common.Constants;
 using Kataskopeya.EF;
 using Kataskopeya.EF.Models;
 using System;

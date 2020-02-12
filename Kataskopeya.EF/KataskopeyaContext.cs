@@ -16,6 +16,7 @@ namespace Kataskopeya.EF
 
         public DbSet<UserFaceImage> UserFaceImages { get; set; }
 
+        public DbSet<Camera> Cameras { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

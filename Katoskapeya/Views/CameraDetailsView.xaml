@@ -1,0 +1,81 @@
+﻿<Window x:Class="Kataskopeya.Views.CameraDetailsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kataskopeya.ViewModels"
+        mc:Ignorable="d"
+        Title="CameraDetailsView"
+        Height="900" Width="1300"
+        WindowStyle="None"
+        ResizeMode="NoResize">
+    <Window.DataContext>
+        <local:CameraDetailsViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="650"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border CornerRadius="10" Grid.RowSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#1D4350" Offset="0.0"/>
+                        <GradientStop Color="#A43931" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <StackPanel>
+                <Image Source="{Binding Image}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <Button 
+                    Width="100" 
+                    Height="100" 
+                    Content="&#x2190;"
+                    Margin="200,50,0,50"
+                    FontSize="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding PreviousWindowCommand}"/>
+                <Button 
+                    Width="100" 
+                    Height="100" 
+                    Content="&#x23f8;"
+                    Margin="20,50,0,50"
+                    FontSize="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding PreviousWindowCommand}"/>
+                <Button 
+                    Width="100" 
+                    Height="100" 
+                    Content="	&#x25b6;"
+                    Margin="20,50,0,50"
+                    FontSize="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding PreviousWindowCommand}"/>
+                
+                <Button 
+                    Width="270" 
+                    Height="100" 
+                    Content="Enable face capture"
+                    Margin="20,50,0,50"
+                    FontSize="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding PreviousWindowCommand}"/>
+
+                <Button 
+                    Width="270" 
+                    Height="100" 
+                    Content="Grayscale camera"
+                    Margin="20,50,0,50"
+                    FontSize="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding PreviousWindowCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
