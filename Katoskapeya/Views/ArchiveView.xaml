@@ -12,9 +12,6 @@
         Background="Transparent"
         WindowStyle="None"
         ResizeMode="NoResize">
-    <Window.DataContext>
-        <local:ArchieveViewModel/>
-    </Window.DataContext>
     <Grid>
 
         <Border CornerRadius="10" Grid.ColumnSpan="2">

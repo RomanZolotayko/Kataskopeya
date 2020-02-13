@@ -28,8 +28,8 @@ namespace Kataskopeya.Helpers
 
                 var user = new User
                 {
-                    Name = "Master",
-                    Password = "Qwe",
+                    Name = "Creator",
+                    Password = "qwe",
                     Age = 23,
                 };
 

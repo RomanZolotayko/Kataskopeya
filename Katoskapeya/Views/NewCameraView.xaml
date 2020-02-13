@@ -6,10 +6,7 @@
         xmlns:local="clr-namespace:Kataskopeya.ViewModels"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
         mc:Ignorable="d"
-        Title="NewCameraView" Height="300" Width="400">
-    <Window.DataContext>
-        <local:NewCameraViewModel/>
-    </Window.DataContext>
+        Title="NewCameraView" Height="350" Width="600">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -40,9 +37,15 @@
 
             <StackPanel Grid.Row="1" Margin="0,20,0,0">
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="IP camera url:"
+                               Margin="30,0,0,0"
+                               Foreground="White"
+                               FontFamily="Helvetica"
+                               FontSize="22"
+                               FontWeight="Light"/>
                     <TextBox FontFamily="Helvetica"
                             FontWeight="Light"
-                            Text="{Binding NewIpCameraUrl}"
+                            Text="{Binding IpCameraUrl}"
                             FontSize="20"
                             HorizontalAlignment="Center"
                             Foreground="White"
@@ -50,10 +53,42 @@
                             BorderThickness="0"
                             Width="270"
                             HorizontalContentAlignment="Left"
+                             
                             Opacity="0.5"
                             Height="25"
-                            Margin="63,0,0,0"/>
+                            Margin="6,0,0,0"/>
                     <iconPacks:PackIconMaterial Kind="ViewStream"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Foreground="White"/>
+                </StackPanel>
+                <Border Width="270"
+                       Height="2"
+                       Background="White"
+                       Opacity="0.5"/>
+
+                <StackPanel Margin="0,30,0,0" Orientation="Horizontal">
+                    <TextBlock Text="Camera name:"
+                               Margin="20,0,0,0"
+                               Foreground="White"
+                               FontFamily="Helvetica"
+                               FontSize="22"
+                               FontWeight="Light" Width="134"/>
+                    <TextBox FontFamily="Helvetica"
+                            FontWeight="Light"
+                            Text="{Binding CameraName}"
+                            FontSize="20"
+                            HorizontalAlignment="Center"
+                            Foreground="White"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Width="270"
+                            HorizontalContentAlignment="Left"
+                             
+                            Opacity="0.5"
+                            Height="25"
+                            Margin="6,0,0,0"/>
+                    <iconPacks:PackIconMaterial Kind="Ornament"
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
                                                Foreground="White"/>
@@ -64,12 +99,13 @@
                        Opacity="0.5"/>
             </StackPanel>
 
+
             <StackPanel Grid.Row="1">
                 <Button Width="100"
                             Height="40"
                             Content="ADD"
                             Command="{Binding AddNewCameraUrlCommand}"
-                            Margin="0,100,0,0"/>
+                            Margin="0,150,0,0"/>
             </StackPanel>
         </Grid>
     </Grid>

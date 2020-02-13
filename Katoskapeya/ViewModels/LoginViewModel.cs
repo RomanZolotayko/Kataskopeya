@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using Kataskopeya.Commands;
 using Kataskopeya.EF;
+using Kataskopeya.Extensions;
 using Kataskopeya.Views;
 using System;
 using System.Data.Entity;

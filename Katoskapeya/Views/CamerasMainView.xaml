@@ -9,9 +9,6 @@
         Background="Transparent"
         WindowState="Maximized" WindowStyle="None"
         ResizeMode="NoResize">
-    <Window.DataContext>
-        <local:CamerasMainViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -22,8 +19,10 @@
             <Border CornerRadius="10" Grid.RowSpan="2">
                 <Border.Background>
                     <LinearGradientBrush>
-                        <GradientStop Color="#1D4350" Offset="0.0"/>
-                        <GradientStop Color="#A43931" Offset="1"/>
+                        <GradientStop Color="#03001e" Offset="0.0"/>
+                        <GradientStop Color="#7303c0" Offset="0.25"/>
+                        <GradientStop Color="#ec38bc" Offset="0.5"/>
+                        <GradientStop Color="#fdeff9" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
@@ -79,8 +78,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel
-                                Width="{Binding Width}"
-                                Height="{Binding Height}">
+                                Width="{Binding GridWidth}"
+                                Height="{Binding GridHeight}">
                                 <Image Source="{Binding Image}">
                                     <Image.InputBindings>
                                         <MouseBinding MouseAction="LeftDoubleClick" 

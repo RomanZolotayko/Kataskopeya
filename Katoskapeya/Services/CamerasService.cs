@@ -1,6 +1,10 @@
 ﻿using Kataskopeya.EF;
 using Kataskopeya.EF.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace Kataskopeya.Services
 {
@@ -23,6 +27,25 @@ namespace Kataskopeya.Services
             _context.Cameras.Add(camera);
 
             _context.SaveChanges();
+        }
+
+        public async Task<bool> IsCameraExists(string sourceUrl)
+        {
+            var camera = await _context.Cameras.FirstOrDefaultAsync(c => c.Url == sourceUrl);
+
+            if (camera == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<IEnumerable<Camera>> GetCameras()
+        {
+            var cameras = await _context.Cameras.ToListAsync();
+
+            return cameras;
         }
     }
 }

@@ -53,6 +53,10 @@
     <Compile Include="Migrations\202002121217581_InitialCreate.Designer.cs">
       <DependentUpon>202002121217581_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002131040599_AddedCameraName.cs" />
+    <Compile Include="Migrations\202002131040599_AddedCameraName.Designer.cs">
+      <DependentUpon>202002131040599_AddedCameraName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Base.cs" />
     <Compile Include="Models\Camera.cs" />
@@ -68,6 +72,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202002121217581_InitialCreate.resx">
       <DependentUpon>202002121217581_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002131040599_AddedCameraName.resx">
+      <DependentUpon>202002131040599_AddedCameraName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

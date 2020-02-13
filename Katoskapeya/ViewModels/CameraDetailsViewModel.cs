@@ -1,8 +1,11 @@
-﻿using AForge.Video;
+﻿using AForge.Imaging.Filters;
+using AForge.Video;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Common.Constants;
+using Kataskopeya.Common.Enums;
 using Kataskopeya.Extensions;
+using Kataskopeya.Services;
 using System;
 using System.Drawing;
 using System.Windows.Input;
@@ -15,13 +18,31 @@ namespace Kataskopeya.ViewModels
     {
         private BitmapImage _image;
         private IVideoSource _videoSource;
+        private CameraModes _cameraMode;
+        private readonly VideoRecordingService _videoRecordingService;
+        private readonly MotionDetectionService _motionDetectionService;
+        private readonly FaceAnalyzerService _faceAnalyzerService;
         private bool _isFaceCaptureEnabled;
+        private int _fpsIndexer;
+        private string _analyzeResult;
+
 
         public CameraDetailsViewModel(string cameraUrl)
         {
             PreviousWindowCommand = new RelayCommand(GetToPreviousWindow);
+            EnableFaceCaptureCommand = new RelayCommand(EnableFaceCaptureMode);
+            EnableGrayscaleModeCommand = new RelayCommand(EnableGrayscaleMode);
+            EnableOriginalModeCommand = new RelayCommand(EnableOriginalMode);
+            EnableMotionCaptureModeCommand = new RelayCommand(EnableMotionCaptureMode);
+
+            _videoRecordingService = new VideoRecordingService();
+            _motionDetectionService = new MotionDetectionService();
+            _faceAnalyzerService = new FaceAnalyzerService();
+
             DisplayWidth = DisplayData.DisplayWidth;
             DisplayHeight = DisplayData.DisplayHeight;
+
+            _cameraMode = CameraModes.Original;
 
             if (!string.IsNullOrEmpty(cameraUrl))
             {
@@ -42,6 +63,12 @@ namespace Kataskopeya.ViewModels
             set { Set(ref _image, value); }
         }
 
+        public string AnalyzeResult
+        {
+            get { return _analyzeResult; }
+            set { Set(ref _analyzeResult, value); }
+        }
+
         public bool IsFaceCaptureEnabled
         {
             get { return _isFaceCaptureEnabled; }
@@ -60,6 +87,13 @@ namespace Kataskopeya.ViewModels
 
         public ICommand EnableFaceCaptureCommand { get; set; }
 
+        public ICommand EnableGrayscaleModeCommand { get; set; }
+
+        public ICommand EnableOriginalModeCommand { get; set; }
+
+        public ICommand EnableMotionCaptureModeCommand { get; set; }
+
+
         private void StartCamera()
         {
             _videoSource = new MJPEGStream(CameraUrl);
@@ -69,44 +103,57 @@ namespace Kataskopeya.ViewModels
 
         public void GetToPreviousWindow()
         {
+            _videoSource.Stop();
             CloseAction();
         }
 
-        public void EnableFaceCapture()
+        public void EnableFaceCaptureMode()
         {
-            if (IsFaceCaptureEnabled)
-            {
-                IsFaceCaptureEnabled = false;
-            }
-            else
-            {
-                IsFaceCaptureEnabled = true;
-            }
+            _cameraMode = CameraModes.FaceCapture;
+        }
+
+        public void EnableGrayscaleMode()
+        {
+            _cameraMode = CameraModes.Grayscale;
+        }
+
+        public void EnableOriginalMode()
+        {
+            _cameraMode = CameraModes.Original;
+        }
+
+        public void EnableMotionCaptureMode()
+        {
+            _cameraMode = CameraModes.MotionCapture;
         }
 
         private void ProcessVideo_Frame(object sender, NewFrameEventArgs eventArgs)
         {
+            _fpsIndexer++;
+
             try
             {
                 BitmapImage bitmapImage;
                 using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
                 {
-                    //if (Grayscaled)
-                    //{
-                    //    using (var grayscaledBitmap = Grayscale.CommonAlgorithms.BT709.Apply(bitmap))
-                    //    {
+                    switch (_cameraMode)
+                    {
+                        case CameraModes.FaceCapture:
+                            AnalyzeResult = _faceAnalyzerService.Analyze(bitmap, _fpsIndexer);
+                            break;
 
-                    //        bitmapImage = grayscaledBitmap.ToBitmapImage();
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    //_motionDetectionService.Detect(bitmap);
-                    //    //_faceAnalyzerService.Analyze(bitmap, _fpsIndexer);
-                    //    //_videoRecordingService.StartVideoRecording(bitmap);
-                    //    bitmapImage = bitmap.ToBitmapImage();
-                    //    _fpsIndexer++;
-                    //}
+                        case CameraModes.MotionCapture:
+                            _motionDetectionService.Detect(bitmap);
+                            break;
+
+                        case CameraModes.Grayscale:
+                            Grayscale.CommonAlgorithms.BT709.Apply(bitmap);
+                            break;
+
+                        case CameraModes.Original:
+                            break;
+                    }
+
                     bitmapImage = bitmap.ToBitmapImage();
                 }
 

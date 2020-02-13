@@ -12,9 +12,6 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         MouseDown="Window_MouseDown">
-    <Window.DataContext>
-        <local:LoginViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>

@@ -23,30 +23,41 @@ namespace Kataskopeya.Services
             Task.Run(() => _recognitionEngine.TrainRecognizer()).Wait();
         }
 
-        public void Analyze(Bitmap bitmap, int fpsIndexer)
+        public string RecognizedUser { get; set; }
+
+        public string Analyze(Bitmap bitmap, int fpsIndexer)
         {
+            var size = new Size(30, 30);
+
             var grayFrame = new Image<Bgr, byte>(bitmap);
-            var rectangles = _cascadeClassifier.DetectMultiScale(grayFrame, 1.4, 1, Size.Empty);
+            var rectangles = _cascadeClassifier.DetectMultiScale(grayFrame, 1.5, 1, size);
 
             foreach (var rect in rectangles)
             {
                 using (var graphics = Graphics.FromImage(bitmap))
                 {
+
                     using (var pen = new Pen(Color.Red, 2))
                     {
                         graphics.DrawRectangle(pen, rect);
                     }
+                    //var faceScreenShot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(200, 200, Inter.Cubic);
+                    //faceScreenShot.Bitmap.Save(@"D:\FaceCollector\" + $"{fpsIndexer}" + "myPhoto.png", ImageFormat.Png);
 
-                    if (fpsIndexer % 30 == 0)
+
+                    if (fpsIndexer % 45 == 0)
                     {
                         var catchedFace = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
                         var label = _recognitionEngine.RecognizeUser(catchedFace);
                         var user = _context.Users.FirstOrDefault(x => x.Id == label);
-
+                        RecognizedUser = user == null ? RecognizedUser = "Unknown" : RecognizedUser = user.Name;
                         //_faceScreenshot.Bitmap.Save(@"D:\FaceCollector\" + $"{_index}" + "myPhoto.png", ImageFormat.Png);
                     }
+
                 }
             }
+
+            return RecognizedUser;
         }
     }
 }

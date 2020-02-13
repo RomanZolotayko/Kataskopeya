@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace Kataskopeya.Extensions
 {
-    public static class BitmapExtension
+    public static class BitmapExtensions
     {
         public static BitmapImage ToBitmapImage(this Bitmap bitmap)
         {

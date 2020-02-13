@@ -1,4 +1,5 @@
 ﻿using Accord.Video.FFMPEG;
+using Kataskopeya.Extensions;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
@@ -9,24 +10,54 @@ namespace Kataskopeya.Services
     {
         private readonly VideoFileWriter _writer;
         private DateTime? _firstFrameTime;
+        private int _videoDurationTracker;
+        private int _15MinutesInFrames = 18000;
+        private string _fileNameSeparator = "_";
 
         public VideoRecordingService()
         {
             _writer = new VideoFileWriter();
+            _videoDurationTracker = 0;
         }
 
-        public void SetUpRecordingEngine(double width, double height)
+        public double Width { get; set; }
+
+        public double Height { get; set; }
+
+        public string FilePath { get; set; }
+
+        public string CameraName { get; set; }
+
+        public void SetUpRecordingEngine(double width, double height, string cameraName)
         {
             var dialog = new SaveFileDialog();
 
-            dialog.FileName = "D:\\video\\video.avi";
-            dialog.FileName = AppDomain.CurrentDomain.BaseDirectory + "SurvellianceMaterials\\" + DateTime.Now.ToString("MM/dd/yyyy").Replace(".", "_") + ".avi";
+            Width = width;
+            Height = height;
+            CameraName = cameraName;
+
+            var proceededCameraName = cameraName.GetVideoFileName();
+
+            dialog.FileName = AppDomain.CurrentDomain.BaseDirectory + "SurvellianceMaterials\\" + $"{proceededCameraName}" + ".avi";
+            FilePath = dialog.FileName;
             dialog.AddExtension = true;
-            _writer.Open(dialog.FileName, (int)Math.Round(width, 0), (int)Math.Round(height, 0));
+            _writer.Open(dialog.FileName, (int)Math.Round(Width, 0), (int)Math.Round(Height, 0));
         }
 
         public void StartVideoRecording(Bitmap frame)
         {
+            _videoDurationTracker++;
+
+            if (_videoDurationTracker % _15MinutesInFrames == 0)
+            {
+                var filePath = AppDomain
+                    .CurrentDomain
+                    .BaseDirectory + "SurvellianceMaterials\\" + $"{CameraName.GetVideoFileName()}" + ".avi";
+                _writer.Close();
+                _writer.Open(filePath, (int)Width, (int)Height);
+                _videoDurationTracker = 0;
+            }
+
             if (_firstFrameTime != null)
             {
                 _writer.WriteVideoFrame(frame);

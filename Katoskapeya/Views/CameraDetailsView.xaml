@@ -9,9 +9,6 @@
         Height="900" Width="1300"
         WindowStyle="None"
         ResizeMode="NoResize">
-    <Window.DataContext>
-        <local:CameraDetailsViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -29,7 +26,7 @@
             </Border>
 
             <StackPanel>
-                <Image Source="{Binding Image}"/>
+                <Image Height="650" Width="1300" Source="{Binding Image}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -37,7 +34,7 @@
                     Width="100" 
                     Height="100" 
                     Content="&#x2190;"
-                    Margin="200,50,0,50"
+                    Margin="50,50,0,50"
                     FontSize="30"
                     HorizontalAlignment="Left"
                     Command="{Binding PreviousWindowCommand}"/>
@@ -65,7 +62,7 @@
                     Margin="20,50,0,50"
                     FontSize="30"
                     HorizontalAlignment="Left"
-                    Command="{Binding PreviousWindowCommand}"/>
+                    Command="{Binding EnableFaceCaptureCommand}"/>
 
                 <Button 
                     Width="270" 
@@ -74,7 +71,13 @@
                     Margin="20,50,0,50"
                     FontSize="30"
                     HorizontalAlignment="Left"
-                    Command="{Binding PreviousWindowCommand}"/>
+                    Command="{Binding EnableGrayscaleModeCommand}"/>
+                <TextBlock Text="{Binding AnalyzeResult}" VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="100,0,0,0"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           FontSize="22"></TextBlock>
             </StackPanel>
         </Grid>
     </Grid>
