@@ -174,6 +174,12 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=3.0.1.920, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MaterialDesignThemes.3.0.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
@@ -220,11 +226,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\BaseCommandHandler.cs" />
-    <Compile Include="Extensions\BitmapExtension.cs" />
-    <Compile Include="Extensions\DoubleWindowOpenChecker.cs" />
+    <Compile Include="Extensions\BitmapExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\DbSeedHelper.cs" />
     <Compile Include="Helpers\RecognizerEngine.cs" />
+    <Compile Include="Models\ArchiveVideo.cs" />
     <Compile Include="Models\MonitoringImage.cs" />
+    <Compile Include="Models\PagedDirectoryFiles.cs" />
+    <Compile Include="Processors\PagingProcessor.cs" />
     <Compile Include="Services\CamerasService.cs" />
     <Compile Include="Services\FaceAnalyzerService.cs" />
     <Compile Include="Services\MotionDetectionService.cs" />
@@ -236,6 +245,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\NewCameraViewModel.cs" />
+    <Compile Include="ViewModels\VideoPlayerViewModel.cs" />
     <Compile Include="Views\ArchiveView.xaml.cs">
       <DependentUpon>ArchiveView.xaml</DependentUpon>
     </Compile>
@@ -259,6 +269,9 @@
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VideoPlayerView.xaml.cs">
+      <DependentUpon>VideoPlayerView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -338,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VideoPlayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

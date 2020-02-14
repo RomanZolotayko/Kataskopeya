@@ -44,8 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\DisplayData.cs" />
+    <Compile Include="Constants\FileExtensions.cs" />
     <Compile Include="Constants\FileSystemPaths.cs" />
     <Compile Include="Enums\CameraModes.cs" />
+    <Compile Include="Enums\PagingOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

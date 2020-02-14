@@ -8,7 +8,7 @@ namespace Kataskopeya.Extensions
 
         public static string GetVideoFileName(this string cameraName)
         {
-            return cameraName + _fileNameSeparator + DateTime.Now.TimeOfDay.ToString("MM/dd/yyyy").Replace(".", "_").Replace(":", "_");
+            return cameraName + _fileNameSeparator + DateTime.Now.TimeOfDay.ToString().Replace(".", "_").Replace(":", "_");
         }
     }
 }
