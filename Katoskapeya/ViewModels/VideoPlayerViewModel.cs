@@ -41,6 +41,7 @@ namespace Kataskopeya.ViewModels
         private void GetToPreviousWindow()
         {
             CloseAction();
+            Player.Close();
         }
 
         private void StartVideo()

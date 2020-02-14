@@ -9,6 +9,7 @@ namespace Kataskopeya.Views
         public ArchiveView()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             var viewModel = new ArchieveViewModel();
             this.DataContext = viewModel;
             if (viewModel.CloseAction == null)

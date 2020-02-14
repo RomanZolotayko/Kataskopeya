@@ -9,6 +9,7 @@ namespace Kataskopeya.Views
         public NewCameraView()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             var viewModel = new NewCameraViewModel();
             this.DataContext = viewModel;
             if (viewModel.CloseAction == null)

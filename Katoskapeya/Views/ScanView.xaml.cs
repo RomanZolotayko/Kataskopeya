@@ -7,6 +7,7 @@ namespace Kataskopeya.Views
         public ScanView()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
     }
 }

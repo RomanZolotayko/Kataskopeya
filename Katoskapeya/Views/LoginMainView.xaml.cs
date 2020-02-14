@@ -10,6 +10,7 @@ namespace Kataskopeya.Views
         public LoginMainView()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             var vm = new LoginViewModel();
             this.DataContext = vm;
             if (vm.CloseAction == null)

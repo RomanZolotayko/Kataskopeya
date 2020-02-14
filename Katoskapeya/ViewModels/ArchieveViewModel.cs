@@ -21,9 +21,10 @@ namespace Kataskopeya.ViewModels
         private IEnumerable<string> _fileNames;
         private ObservableCollection<ArchiveVideo> _archivedVideos;
         private bool _isNextPageButtonVisible;
-        private int _pageNumber = 0;
+        private int _pageNumber;
         private int _pagePayload = 18;
         private PagingProcessor _pagingProcessor;
+        private bool _isOrderedByDescending;
 
         public ArchieveViewModel()
         {
@@ -31,6 +32,7 @@ namespace Kataskopeya.ViewModels
             PreviousWindow = new RelayCommand(GetToPreviousWindow);
             NextPageCommand = new RelayCommand(NextPage);
             PreviousPageCommand = new RelayCommand(PreviousPage);
+            SortByNameCommand = new RelayCommand(SortByName);
             VideoDirectory = new DirectoryInfo(FileSystemPaths.DebugFolder + "SurvellianceMaterials");
             LoadArchivedVideos();
         }
@@ -42,6 +44,8 @@ namespace Kataskopeya.ViewModels
         public ICommand NextPageCommand { get; private set; }
 
         public ICommand PreviousPageCommand { get; private set; }
+
+        public ICommand SortByNameCommand { get; private set; }
 
         public IEnumerable<string> FileNames
         {
@@ -82,6 +86,7 @@ namespace Kataskopeya.ViewModels
             CreateaArchivedVideos(pagedDirectoryFiles.Files);
 
             FileNames = pagedDirectoryFiles.Files.Select(x => x.Name);
+            IsNextPageButtonVisible = pagedDirectoryFiles.IsNextPage;
         }
 
         private void NextPage()
@@ -121,11 +126,12 @@ namespace Kataskopeya.ViewModels
             {
                 var archivedVideo = new ArchiveVideo
                 {
-                    Name = file.FullName,
+                    Fullname = file.FullName,
                     Stream = File.ReadAllBytes(file.FullName),
+                    Name = file.Name.Split('.').First()
                 };
 
-                ShellFile thumbNail = ShellFile.FromFilePath(archivedVideo.Name);
+                ShellFile thumbNail = ShellFile.FromFilePath(archivedVideo.Fullname);
                 var thumbLarge = thumbNail.Thumbnail.LargeBitmap;
                 archivedVideo.PreviewImage = thumbLarge.ToBitmapImage();
 
@@ -133,6 +139,12 @@ namespace Kataskopeya.ViewModels
 
                 RaisePropertyChanged("ArchivedVideos");
             }
+        }
+
+        private void SortByName()
+        {
+            ArchivedVideos.OrderByDescending(av => av.Name);
+            RaisePropertyChanged("ArchivedVideos");
         }
 
         public void Dispose()

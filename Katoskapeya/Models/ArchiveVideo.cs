@@ -13,6 +13,8 @@ namespace Kataskopeya.Models
         private BitmapImage _previewImage;
         private ICommand _openVideoCommand;
 
+        public string Fullname { get; set; }
+
         public string Name { get; set; }
 
         public byte[] Stream { get; set; }

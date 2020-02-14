@@ -9,6 +9,7 @@ namespace Kataskopeya.Views
         public MenuView()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             var viewModel = new MenuViewModel();
             this.DataContext = viewModel;
             if (viewModel.CloseAction == null)

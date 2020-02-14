@@ -10,7 +10,7 @@ namespace Kataskopeya.Views
         public VideoPlayerView()
         {
             InitializeComponent();
-            InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             var viewModel = new VideoPlayerViewModel();
             this.DataContext = viewModel;
             this.ArchivePlayer.LoadedBehavior = MediaState.Manual;

@@ -56,7 +56,9 @@
                             Content="Sort by date"
                             Margin="50,0,60,0"
 />
-                    <Button Width="100" Height="40" Content="Sort by name"/>
+                    <Button Width="100" Height="40"
+                            Content="Sort by name"
+                            Command="{Binding SortByNameCommand}"/>
                     <TextBox Text="Search"
                              Background="Transparent"
                              Foreground="White"
@@ -91,13 +93,18 @@
                             <StackPanel
                                 Width="200"
                                 Height="200">
-                                <Image Source="{Binding PreviewImage}">
+                                <Image Width="200" Height="150" Source="{Binding PreviewImage}">
                                     <Image.InputBindings>
                                         <MouseBinding MouseAction="LeftDoubleClick" 
                                                       Command="{Binding OpenVideoCommand}"
-                                                      CommandParameter="{Binding Name}"/>
+                                                      CommandParameter="{Binding Fullname}"/>
                                     </Image.InputBindings>
                                 </Image>
+                                <TextBlock Text="{Binding Name}"
+                                           HorizontalAlignment="Center"
+                                           FontSize="18"
+                                           FontFamily="Helvetica"
+                                           FontWeight="Light"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -108,12 +115,12 @@
                 <Button Margin="550,0,0,0"
                         Height="50"
                         Width="100"
-                        Content="Left"
+                        Content="Previous page"
                         Command="{Binding PreviousPageCommand}"/>
                 <Button Margin="50,0,0,0"
                         Height="50"
                         Width="100"
-                        Content="Right"
+                        Content="Next page"
                         IsEnabled="{Binding IsNextPageButtonVisible}"
                         Command="{Binding NextPageCommand}"/>
             </StackPanel>

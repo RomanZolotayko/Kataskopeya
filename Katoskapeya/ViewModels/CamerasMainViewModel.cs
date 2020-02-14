@@ -114,11 +114,6 @@ namespace Kataskopeya.ViewModels
             var menu = new MenuView();
             menu.Show();
 
-            foreach (var image in MonitoringImages)
-            {
-                image.VideoSource.Stop();
-            }
-
             CloseAction();
         }
 
