@@ -46,7 +46,7 @@ namespace Kataskopeya.ViewModels
 
             if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(Username))
             {
-                MessageBox.Show("Fields couldn't be empty.");
+                MessageBox.Show("Fields couldn't be empty.", "Exception", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace Kataskopeya.ViewModels
 
             if (user == null)
             {
-                MessageBox.Show("Email or password incorrect.");
+                MessageBox.Show("Email or password incorrect.", "Exception", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 

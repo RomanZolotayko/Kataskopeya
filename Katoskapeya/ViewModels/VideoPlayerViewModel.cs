@@ -112,7 +112,18 @@ namespace Kataskopeya.ViewModels
         public void SliderValueChangedHandler(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var newSliderValue = TimeSpan.FromSeconds(e.NewValue);
-            Player.Position = newSliderValue;
+            if (e.NewValue > 1)
+            {
+                Player.Position = newSliderValue;
+            }
+        }
+
+        public void SliderLostMouseCaptureHandler(object sender, MouseEventArgs e)
+        {
+            var source = e.Source as Slider;
+            var sliderValue = source.Value;
+            Player.Position = TimeSpan.FromSeconds(sliderValue);
+            _isVideoPaused = false;
         }
 
         private void AccelerateVideo()
@@ -132,11 +143,21 @@ namespace Kataskopeya.ViewModels
         private void MoveVideoForward()
         {
             CurrentVideoPosition += 10;
+            Player.Position = TimeSpan.FromSeconds(CurrentVideoPosition);
         }
 
         private void MoveVideoBack()
         {
-            CurrentVideoPosition -= 10;
+            if (CurrentVideoPosition > 10)
+            {
+                CurrentVideoPosition -= 10;
+            }
+            else
+            {
+                CurrentVideoPosition = 0;
+            }
+
+            Player.Position = TimeSpan.FromSeconds(CurrentVideoPosition);
         }
 
         public void Dispose()

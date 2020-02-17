@@ -84,6 +84,13 @@
                                                       Command="{Binding OpenCameraDetailsCommand}"
                                                       CommandParameter="{Binding Url}"/>
                                     </Image.InputBindings>
+                                    <Image.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Remove"
+                                                      Command="{Binding RemoveCameraCommand}"
+                                                      CommandParameter="{Binding Url}"/>
+                                        </ContextMenu>
+                                    </Image.ContextMenu>
                                 </Image>
                             </StackPanel>
                         </DataTemplate>

@@ -19,6 +19,8 @@ namespace Kataskopeya.Models
 
         public byte[] Stream { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         public BitmapImage PreviewImage
         {
             get { return _previewImage; }

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Common.Constants;
+using Kataskopeya.CustomEventArgs;
 using Kataskopeya.EF.Models;
 using Kataskopeya.Extensions;
 using Kataskopeya.Models;
@@ -139,8 +140,11 @@ namespace Kataskopeya.ViewModels
                 RaisePropertyChanged("IpCameraUrls");
 
                 var monitoringImage = new MonitoringImage(url, HalfWidth - 20, HalfHeight);
+
+                monitoringImage.UpdateMainCamerasOnDelete += RemoveCameraHandler;
                 monitoringImage.VideoRecordingService = new VideoRecordingService();
                 monitoringImage.CameraName = cameraName;
+
                 MonitoringImages.Add(monitoringImage);
 
                 var camera = new Camera
@@ -155,6 +159,12 @@ namespace Kataskopeya.ViewModels
 
                 StartLastAddedCamera();
             }
+        }
+
+        private async void RemoveCameraHandler(object sender, MainCamerasEventArgs eventArgs)
+        {
+            await _camerasService.RemoveCamera(eventArgs.CameraUrl);
+            PrepareWindowToWork();
         }
 
         private void CaptureVideo_Frame(object sender, NewFrameEventArgs eventArgs)

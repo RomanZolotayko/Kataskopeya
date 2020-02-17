@@ -34,7 +34,7 @@
                     Width="100" 
                     Height="100" 
                     Content="&#x2190;"
-                    Margin="50,50,0,50"
+                    Margin="100,50,0,50"
                     FontSize="30"
                     HorizontalAlignment="Left"
                     Command="{Binding PreviousWindowCommand}"/>
@@ -65,13 +65,23 @@
                     Command="{Binding EnableFaceCaptureCommand}"/>
 
                 <Button 
-                    Width="270" 
+                    Width="180" 
                     Height="100" 
-                    Content="Grayscale camera"
+                    Content="Grayscale"
                     Margin="20,50,0,50"
                     FontSize="30"
                     HorizontalAlignment="Left"
                     Command="{Binding EnableGrayscaleModeCommand}"/>
+
+                <Button 
+                    Width="220" 
+                    Height="100" 
+                    Content="Motion Capture"
+                    Margin="20,50,0,50"
+                    FontSize="30"
+                    HorizontalAlignment="Left"
+                    Command="{Binding EnableMotionCaptureModeCommand}"/>
+                
                 <TextBlock Text="{Binding AnalyzeResult}" VerticalAlignment="Center"
                            HorizontalAlignment="Right"
                            Margin="100,0,0,0"

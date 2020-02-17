@@ -46,7 +46,9 @@
     <Compile Include="Constants\DisplayData.cs" />
     <Compile Include="Constants\FileExtensions.cs" />
     <Compile Include="Constants\FileSystemPaths.cs" />
+    <Compile Include="Constants\FolderNames.cs" />
     <Compile Include="Enums\CameraModes.cs" />
+    <Compile Include="Enums\OrderingTypes.cs" />
     <Compile Include="Enums\PagingOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

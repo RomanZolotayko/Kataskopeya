@@ -32,8 +32,6 @@
 
             <StackPanel Grid.Row="0">
 
-
-
                 <StackPanel Orientation="Horizontal">
                     <Button Width="50" Height="40" 
                             VerticalAlignment="Bottom" 
@@ -55,7 +53,7 @@
                             Height="40"
                             Content="Sort by date"
                             Margin="50,0,60,0"
-/>
+                            Command="{Binding SortByDateCommand}"/>
                     <Button Width="100" Height="40"
                             Content="Sort by name"
                             Command="{Binding SortByNameCommand}"/>
@@ -65,14 +63,20 @@
                              FontWeight="Light"
                              FontFamily="Helvetica"
                              FontSize="22"
+                             x:Name="SearchField"
                              VerticalContentAlignment="Center"
                              Margin="100,0,0,0"
-                             Width="150"
+                             Width="200"
                              BorderThickness="0"/>
-                    <iconPacks:PackIconMaterial Kind="ShieldSearch"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"
-                                               Foreground="White" Height="38" Width="40"/>
+                    <Button Width="70" Height="40"
+                            Content="&#x1F50E;"
+                            Command="{Binding SearchCommand}"
+                            CommandParameter="{Binding ElementName=SearchField}"/>
+                    <Button Width="100" Height="40"
+                            Visibility="{Binding SearchButtonVisability}"
+                            Content="Clear results"
+                            Margin="20,0,0,0"
+                            Command="{Binding ClearSearchResultsCommand}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -103,6 +107,7 @@
                                 <TextBlock Text="{Binding Name}"
                                            HorizontalAlignment="Center"
                                            FontSize="18"
+                                           TextWrapping="Wrap"
                                            FontFamily="Helvetica"
                                            FontWeight="Light"/>
                             </StackPanel>
@@ -112,12 +117,12 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button Margin="550,0,0,0"
+                <Button Margin="550,30,0,0"
                         Height="50"
                         Width="100"
                         Content="Previous page"
                         Command="{Binding PreviousPageCommand}"/>
-                <Button Margin="50,0,0,0"
+                <Button Margin="50,30,0,0"
                         Height="50"
                         Width="100"
                         Content="Next page"

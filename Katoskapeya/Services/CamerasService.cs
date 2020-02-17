@@ -47,5 +47,19 @@ namespace Kataskopeya.Services
 
             return cameras;
         }
+
+        public async Task<bool> RemoveCamera(string url)
+        {
+            var camera = await _context.Cameras.FirstOrDefaultAsync(c => c.Url == url);
+
+            if (camera != null)
+            {
+                _context.Cameras.Remove(camera);
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
     }
 }

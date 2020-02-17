@@ -93,7 +93,6 @@ namespace Kataskopeya.ViewModels
 
         public ICommand EnableMotionCaptureModeCommand { get; set; }
 
-
         private void StartCamera()
         {
             _videoSource = new MJPEGStream(CameraUrl);

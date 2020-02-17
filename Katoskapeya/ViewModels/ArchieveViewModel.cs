@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Kataskopeya.Commands;
 using Kataskopeya.Common.Constants;
 using Kataskopeya.Common.Enums;
 using Kataskopeya.Extensions;
@@ -12,6 +13,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Kataskopeya.ViewModels
@@ -21,19 +24,24 @@ namespace Kataskopeya.ViewModels
         private IEnumerable<string> _fileNames;
         private ObservableCollection<ArchiveVideo> _archivedVideos;
         private bool _isNextPageButtonVisible;
-        private int _pageNumber;
+        private int _pageNumber = 0;
         private int _pagePayload = 18;
         private PagingProcessor _pagingProcessor;
         private bool _isOrderedByDescending;
+        private ICommand _searchCommand;
+        private Visibility _searchButtonVisability;
 
         public ArchieveViewModel()
         {
+            SearchButtonVisability = Visibility.Hidden;
             _pagingProcessor = new PagingProcessor();
             PreviousWindow = new RelayCommand(GetToPreviousWindow);
             NextPageCommand = new RelayCommand(NextPage);
             PreviousPageCommand = new RelayCommand(PreviousPage);
             SortByNameCommand = new RelayCommand(SortByName);
-            VideoDirectory = new DirectoryInfo(FileSystemPaths.DebugFolder + "SurvellianceMaterials");
+            SortByDateCommand = new RelayCommand(SortByDate);
+            ClearSearchResultsCommand = new RelayCommand(ClearSearchResults);
+            VideoDirectory = new DirectoryInfo(FileSystemPaths.DebugFolder + FolderNames.VideoMaterialsFolder);
             LoadArchivedVideos();
         }
 
@@ -47,10 +55,28 @@ namespace Kataskopeya.ViewModels
 
         public ICommand SortByNameCommand { get; private set; }
 
+        public ICommand SortByDateCommand { get; private set; }
+
+        public ICommand ClearSearchResultsCommand { get; private set; }
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand = new BaseCommandHandler(param => SearchHandler(param), true));
+            }
+        }
+
         public IEnumerable<string> FileNames
         {
             get { return _fileNames; }
             set { Set(ref _fileNames, value); }
+        }
+
+        public Visibility SearchButtonVisability
+        {
+            get { return _searchButtonVisability; }
+            set { Set(ref _searchButtonVisability, value); }
         }
 
         public bool IsNextPageButtonVisible
@@ -72,7 +98,7 @@ namespace Kataskopeya.ViewModels
             ArchivedVideos = new ObservableCollection<ArchiveVideo>();
 
             var pagedDirectoryFiles = _pagingProcessor
-                            .GetPagedDirectoryFiles(VideoDirectory, _pageNumber, _pagePayload, PagingOperations.StartPage, FileExtensions.AviExtension);
+                            .GetPagedDirectoryFiles(VideoDirectory, _pageNumber, _pagePayload, PagingOperations.None, FileExtensions.AviExtension);
 
             if (pagedDirectoryFiles.Files.Count() > 18)
             {
@@ -87,6 +113,26 @@ namespace Kataskopeya.ViewModels
 
             FileNames = pagedDirectoryFiles.Files.Select(x => x.Name);
             IsNextPageButtonVisible = pagedDirectoryFiles.IsNextPage;
+        }
+
+        private void SearchHandler(object param)
+        {
+            var textBox = param as TextBox;
+            var searchQuery = textBox.Text;
+
+            ArchivedVideos = ArchivedVideos.FilterObservableCollection(searchQuery);
+            SearchButtonVisability = Visibility.Visible;
+
+            RaisePropertyChanged("ArchivedVideos");
+            RaisePropertyChanged("SearchButtonVisability");
+        }
+
+        private void ClearSearchResults()
+        {
+            LoadArchivedVideos();
+
+            SearchButtonVisability = Visibility.Hidden;
+            RaisePropertyChanged("SearchButtonVisability");
         }
 
         private void NextPage()
@@ -124,11 +170,13 @@ namespace Kataskopeya.ViewModels
         {
             foreach (var file in filesInfo)
             {
+
                 var archivedVideo = new ArchiveVideo
                 {
                     Fullname = file.FullName,
                     Stream = File.ReadAllBytes(file.FullName),
-                    Name = file.Name.Split('.').First()
+                    Name = file.Name.Split('.').First(),
+                    CreationDate = file.Name.GetDateFromFileName()
                 };
 
                 ShellFile thumbNail = ShellFile.FromFilePath(archivedVideo.Fullname);
@@ -143,13 +191,39 @@ namespace Kataskopeya.ViewModels
 
         private void SortByName()
         {
-            ArchivedVideos.OrderByDescending(av => av.Name);
+            if (_isOrderedByDescending)
+            {
+                ArchivedVideos = ArchivedVideos.SortObservableCollection(OrderingTypes.Ascending, x => x.Name);
+                _isOrderedByDescending = false;
+            }
+            else
+            {
+                ArchivedVideos = ArchivedVideos.SortObservableCollection(OrderingTypes.Descending, x => x.Name);
+                _isOrderedByDescending = true;
+            }
+
+            RaisePropertyChanged("ArchivedVideos");
+        }
+
+        private void SortByDate()
+        {
+            if (_isOrderedByDescending)
+            {
+                ArchivedVideos = ArchivedVideos.SortObservableCollection(OrderingTypes.Ascending, x => x.CreationDate);
+                _isOrderedByDescending = false;
+            }
+            else
+            {
+                ArchivedVideos = ArchivedVideos.SortObservableCollection(OrderingTypes.Descending, x => x.CreationDate);
+                _isOrderedByDescending = true;
+            }
+
             RaisePropertyChanged("ArchivedVideos");
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            CloseAction();
         }
 
     }

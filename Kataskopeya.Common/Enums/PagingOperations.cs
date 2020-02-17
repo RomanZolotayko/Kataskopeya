@@ -4,6 +4,6 @@
     {
         Previous = 0,
         Next,
-        StartPage
+        None
     }
 }
