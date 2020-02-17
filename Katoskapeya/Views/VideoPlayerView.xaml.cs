@@ -19,6 +19,9 @@ namespace Kataskopeya.Views
             viewModel.Player.Play();
             if (viewModel.CloseAction == null)
                 viewModel.CloseAction = new Action(this.Close);
+            viewModel.Player.MediaOpened += viewModel.GetMediaDuration;
+            viewModel.Player.MediaOpened += viewModel.HandlerTimerTick;
+            DurationSlider.ValueChanged += viewModel.SliderValueChangedHandler;
         }
     }
 }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kataskopeya.Views"
+        xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
         mc:Ignorable="d"
         Title="VideoPlayerView"
         Height="650"
@@ -30,7 +31,13 @@
             <StackPanel Grid.Column="1">
                 <MediaElement x:Name="ArchivePlayer" Source="{Binding Filename}"/>
             </StackPanel>
-            <Slider Margin="0,0,0,20" Grid.Column="1" VerticalAlignment="Bottom"></Slider>
+            <Slider Margin="0,0,0,20"
+                    Grid.Column="1"
+                    x:Name="DurationSlider"
+                    Minimum="0"
+                    Value="{Binding CurrentVideoPosition}"
+                    Maximum="{Binding VideoDuration}"
+                    VerticalAlignment="Bottom"></Slider>
 
             <StackPanel Grid.Column="0">
                 <Button Width="50" Height="40" 
@@ -41,21 +48,66 @@
                             Command="{Binding PreviousWindowCommand}"/>
                 <Button 
                     Width="100" 
-                    Height="100" 
-                    Content="&#x23f8;"
-                    Margin="100,50,0,50"
+                    Height="50" 
+                    Content="Pause"
                     FontSize="30"
-                    HorizontalAlignment="Left"
+                    Margin="0,30,0,20"
+                    HorizontalAlignment="Center"
                     Command="{Binding StopVideoCommand}"/>
                 <Button 
                     Width="100" 
-                    Height="100" 
-                    Content="&#x25b6;"
-                    Margin="100,50,0,50"
+                    Height="50" 
+                    Content="Play"
+                    Margin="0,0,0,20"
                     FontSize="30"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     Command="{Binding StartVideoCommand}"/>
+                <Button 
+                    Width="100" 
+                    Height="50" 
+                    Content="Faster"
+                    FontSize="30"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    Command="{Binding AccelarateVideoCommand}"/>
+                <Button 
+                    Width="100" 
+                    Height="50" 
+                    Content="Slower"
+                    FontSize="30"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    Command="{Binding SlowVideoCommand}"/>
+                <Button 
+                    Width="100" 
+                    Height="50" 
+                    Content="+10 sec"
+                    FontSize="30"
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    Command="{Binding MoveVideoForwardCommand}"/>
+                <Button 
+                    Width="100" 
+                    Height="50" 
+                    Content="- 10 sec"
+                    FontSize="30"
+                    HorizontalAlignment="Center"
+                    Command="{Binding MoveVideoBackCommand}"/>
             </StackPanel>
+
+            <TextBlock Text="KataskopeyaPlay"
+                       Margin="0,0,0,20"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       FontFamily="Helvetica"
+                       FontSize="22"
+                       FontWeight="Light"/>
+            <iconPacks:PackIconMaterial Kind="PacMan"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"
+                                               Foreground="Black"
+                                        Margin="180,0,0,25"
+                                        RenderTransformOrigin="8.234,16.164"/>
         </Grid>
     </Grid>
 </Window>
