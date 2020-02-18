@@ -13,6 +13,7 @@ namespace Kataskopeya.ViewModels
             OpenArchiveWindowCommand = new RelayCommand(MoveToArchive);
             OpenCamerasWindowCommand = new RelayCommand(MoveToCameras);
             OpenSettingsWindowCommand = new RelayCommand(MoveToSettings);
+            OpenScanWindowCommand = new RelayCommand(MoveToScan);
         }
 
         public Action CloseAction { get; set; }
@@ -22,6 +23,8 @@ namespace Kataskopeya.ViewModels
         public ICommand OpenCamerasWindowCommand { get; private set; }
 
         public ICommand OpenSettingsWindowCommand { get; private set; }
+
+        public ICommand OpenScanWindowCommand { get; private set; }
 
         public void MoveToArchive()
         {
@@ -39,8 +42,15 @@ namespace Kataskopeya.ViewModels
 
         public void MoveToSettings()
         {
-            var cameras = new SettingsView();
-            cameras.Show();
+            var settings = new SettingsView();
+            settings.Show();
+            CloseAction();
+        }
+
+        public void MoveToScan()
+        {
+            var scanner = new ScanView();
+            scanner.Show();
             CloseAction();
         }
 

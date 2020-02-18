@@ -716,6 +716,7 @@
     <None Include="haarcascade_frontalface_default1.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Resource Include="Images\facerecognition.png" />
     <Content Include="Resources\Emgu.CV.World.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

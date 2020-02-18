@@ -10,6 +10,44 @@
         WindowStyle="None"
         Width="800">
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border CornerRadius="10" Grid.ColumnSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#c31432" Offset="0.0"/>
+                        <GradientStop Color="#240b36" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <StackPanel Grid.Column="0">
+                <Image Source="/Images/facerecognition.png" Width="400" Height="450"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="To enable the recognition engine you need a webcam, and light place, where a camera could take your photo. You need to follow all the next instructions if you want to succeed. Click the button below when you are ready." 
+                           Width="300"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="24"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Foreground="AliceBlue"
+                           TextWrapping="Wrap"
+                           Margin="0,75,0,0"/>
+                <Button Width="100"
+                            Height="40"
+                            Content="Start scan"
+                            Margin="60,20,60,0"
+                            Command="{Binding Login}"
+                            CommandParameter="{Binding ElementName=Password}"/>
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </Window>

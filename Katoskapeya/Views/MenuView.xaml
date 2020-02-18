@@ -25,8 +25,8 @@
                     Grid.ColumnSpan="2">
                 <Border.Background>
                     <LinearGradientBrush>
-                        <GradientStop Color="#f7ff00" Offset="0.0"/>
-                        <GradientStop Color="#db36a4" Offset="1"/>
+                        <GradientStop Color="#c31432" Offset="0.0"/>
+                        <GradientStop Color="#240b36" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>

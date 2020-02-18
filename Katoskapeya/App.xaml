@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Kataskopeya.Views"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             StartupUri="Views/CamerasMainView.xaml">
+             StartupUri="Views/ScanView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
