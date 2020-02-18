@@ -30,11 +30,11 @@
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
-            
+
 
             <StackPanel Grid.Row="0" Margin="0,50,0,0">
                 <Button Width="200" Height="100" Content="ARCHIVE"
-                        Command="{Binding OpenArchiveWindow}"/>
+                        Command="{Binding OpenArchiveWindowCommand}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Margin="0,50,0,0">
@@ -43,11 +43,12 @@
 
             <StackPanel Grid.Column="1" Margin="0,50,0,0">
                 <Button Width="200" Height="100" Content="CAMERAS"
-                        Command="{Binding OpenCamerasWindow}"/>
+                        Command="{Binding OpenCamerasWindowCommand}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,50,0,0">
-                <Button Width="200" Height="100" Content="SETTINGS"/>
+                <Button Width="200" Height="100" Content="SETTINGS"
+                        Command="{Binding OpenSettingsWindowCommand}"/>
             </StackPanel>
 
         </Grid>

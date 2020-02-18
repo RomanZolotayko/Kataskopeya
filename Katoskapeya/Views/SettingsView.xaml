@@ -5,8 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kataskopeya.Views"
         mc:Ignorable="d"
-        Title="SettingsView" Height="450" Width="800">
+        Title="SettingsView"
+        Height="450"
+        Width="800"
+        Background="Transparent"
+        WindowStyle="None"
+        ResizeMode="NoResize">
     <Grid>
-        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border CornerRadius="10" Grid.RowSpan="8">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#f7ff00" Offset="0.0"/>
+                        <GradientStop Color="#db36a4" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <StackPanel Grid.Row="0">
+                <Button Width="50" Height="40" 
+                            VerticalAlignment="Bottom" 
+                            HorizontalAlignment="Left"
+                            Margin="50,10,0,0"
+                            Content="&#x2190;"
+                            FontSize="30"
+                            Command="{Binding PreviousWindow}"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="Duration of recorded video chunk, minutes"
+                           FontSize="22"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="50,15,0,0"/>
+
+                <TextBox Text="{Binding DurationOfRecordedVideoChunk, Mode=TwoWay}"
+                           FontSize="22"
+                           Width="100"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="150,15,0,0"
+                           Background="Transparent"
+                           BorderThickness="2"
+                           BorderBrush="Wheat"
+                           VerticalContentAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="7" Orientation="Horizontal">
+                <Button  Content="Save"
+                         Width="100"
+                         Height="30"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Margin="375,0,0,20"
+                         HorizontalContentAlignment="Center"
+                         Command="{Binding SaveSettingsCommand}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

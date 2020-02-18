@@ -10,15 +10,18 @@ namespace Kataskopeya.ViewModels
     {
         public MenuViewModel()
         {
-            OpenArchiveWindow = new RelayCommand(MoveToArchive);
-            OpenCamerasWindow = new RelayCommand(MoveToCameras);
+            OpenArchiveWindowCommand = new RelayCommand(MoveToArchive);
+            OpenCamerasWindowCommand = new RelayCommand(MoveToCameras);
+            OpenSettingsWindowCommand = new RelayCommand(MoveToSettings);
         }
 
         public Action CloseAction { get; set; }
 
-        public ICommand OpenArchiveWindow { get; private set; }
+        public ICommand OpenArchiveWindowCommand { get; private set; }
 
-        public ICommand OpenCamerasWindow { get; private set; }
+        public ICommand OpenCamerasWindowCommand { get; private set; }
+
+        public ICommand OpenSettingsWindowCommand { get; private set; }
 
         public void MoveToArchive()
         {
@@ -30,6 +33,13 @@ namespace Kataskopeya.ViewModels
         public void MoveToCameras()
         {
             var cameras = new CamerasMainView();
+            cameras.Show();
+            CloseAction();
+        }
+
+        public void MoveToSettings()
+        {
+            var cameras = new SettingsView();
             cameras.Show();
             CloseAction();
         }

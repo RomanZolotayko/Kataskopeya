@@ -24,7 +24,7 @@ namespace Kataskopeya.ViewModels
         private IEnumerable<string> _fileNames;
         private ObservableCollection<ArchiveVideo> _archivedVideos;
         private bool _isNextPageButtonVisible;
-        private int _pageNumber = 0;
+        private int _pageNumber;
         private int _pagePayload = 18;
         private PagingProcessor _pagingProcessor;
         private bool _isOrderedByDescending;

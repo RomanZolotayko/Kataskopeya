@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kataskopeya.Views"
         mc:Ignorable="d"
-        Title="ScanView" Height="450" Width="800">
+        Title="ScanView"
+        Height="450"
+        WindowStyle="None"
+        Width="800">
     <Grid>
         
     </Grid>

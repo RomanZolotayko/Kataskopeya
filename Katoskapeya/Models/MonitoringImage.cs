@@ -1,11 +1,9 @@
 ﻿using AForge.Video;
 using GalaSoft.MvvmLight;
 using Kataskopeya.Commands;
-using Kataskopeya.CustomEventArgs;
 using Kataskopeya.Services;
 using Kataskopeya.ViewModels;
 using Kataskopeya.Views;
-using System;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -14,7 +12,6 @@ namespace Kataskopeya.Models
     public class MonitoringImage : ObservableObject
     {
         private ICommand _openCameraDetailsCommand;
-        private ICommand _removeCameraCommand;
         private BitmapImage _image;
 
         public MonitoringImage(string source, int width, int height)
@@ -25,12 +22,7 @@ namespace Kataskopeya.Models
             IsRecordSetupNeed = true;
         }
 
-        public MonitoringImage()
-        {
-
-        }
-
-        public event EventHandler<MainCamerasEventArgs> UpdateMainCamerasOnDelete;
+        public MonitoringImage() { }
 
         public int GridWidth { get; set; }
 
@@ -62,14 +54,6 @@ namespace Kataskopeya.Models
             }
         }
 
-        public ICommand RemoveCameraCommand
-        {
-            get
-            {
-                return _removeCameraCommand ?? (_removeCameraCommand = new BaseCommandHandler(param => RemoveCameraHandler(param), true));
-            }
-        }
-
         public void OpenCameraDetailsHandler(object param)
         {
             VideoSource.SignalToStop();
@@ -81,20 +65,6 @@ namespace Kataskopeya.Models
 
             cameraDetail.ShowDialog();
             VideoSource.Start();
-        }
-
-
-        private void RemoveCameraHandler(object param)
-        {
-            var cameraUrl = param as string;
-            OnUpdateMainCamerasOnDelete(new MainCamerasEventArgs { CameraUrl = cameraUrl });
-        }
-
-        private void OnUpdateMainCamerasOnDelete(MainCamerasEventArgs eventArgs)
-        {
-            var eventHandler = UpdateMainCamerasOnDelete;
-
-            eventHandler?.Invoke(this, eventArgs);
         }
     }
 }

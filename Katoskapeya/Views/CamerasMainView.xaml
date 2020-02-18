@@ -65,32 +65,29 @@
                 <ListBox Height="1000"
                          BorderThickness="0"
                          Background="Transparent"
+                         x:Name="Cameras"
                          ItemsSource="{Binding MonitoringImages}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         ScrollViewer.VerticalScrollBarVisibility="Visible">
+                         ScrollViewer.VerticalScrollBarVisibility="Visible"
+                         SelectedItem="{Binding SelectedItem}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Remove"
+                                 Command="{Binding RemoveCameraCommand}"
+                                 CommandParameter="{Binding SelectedItem}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel
                                 Width="{Binding GridWidth}"
                                 Height="{Binding GridHeight}">
                                 <Image Source="{Binding Image}">
-                                    <Image.InputBindings>
-                                        <MouseBinding MouseAction="LeftDoubleClick" 
-                                                      Command="{Binding OpenCameraDetailsCommand}"
-                                                      CommandParameter="{Binding Url}"/>
-                                    </Image.InputBindings>
-                                    <Image.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Remove"
-                                                      Command="{Binding RemoveCameraCommand}"
-                                                      CommandParameter="{Binding Url}"/>
-                                        </ContextMenu>
-                                    </Image.ContextMenu>
                                 </Image>
                             </StackPanel>
                         </DataTemplate>

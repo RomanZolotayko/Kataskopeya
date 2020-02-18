@@ -232,6 +232,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\DbSeedHelper.cs" />
     <Compile Include="Helpers\RecognizerEngine.cs" />
+    <Compile Include="Models\ApplicationSettings.cs" />
     <Compile Include="Models\ArchiveVideo.cs" />
     <Compile Include="Models\MonitoringImage.cs" />
     <Compile Include="Models\PagedDirectoryFiles.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Services\CamerasService.cs" />
     <Compile Include="Services\FaceAnalyzerService.cs" />
     <Compile Include="Services\MotionDetectionService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\VideoRecordingService.cs" />
     <Compile Include="ViewModels\ArchieveViewModel.cs" />
     <Compile Include="Models\CameraScreen.cs" />

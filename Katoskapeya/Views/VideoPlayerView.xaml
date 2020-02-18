@@ -19,7 +19,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0">
+            <Border CornerRadius="10" Grid.RowSpan="8">
                 <Border.Background>
                     <LinearGradientBrush>
                         <GradientStop Color="#f7ff00" Offset="0.0"/>
@@ -37,7 +37,9 @@
                     Minimum="0"
                     Value="{Binding CurrentVideoPosition}"
                     Maximum="{Binding VideoDuration}"
-                    VerticalAlignment="Bottom"></Slider>
+                    VerticalAlignment="Bottom">
+
+            </Slider>
 
             <StackPanel Grid.Column="0">
                 <Button Width="50" Height="40" 
@@ -93,6 +95,34 @@
                     FontSize="30"
                     HorizontalAlignment="Center"
                     Command="{Binding MoveVideoBackCommand}"/>
+
+                <!--<StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Duration"
+                           FontSize="22"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Margin="40"
+                           HorizontalAlignment="Left"/>
+
+                    <TextBlock Text="{Binding CurrentVideoPosition}"
+                           FontSize="22"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           VerticalAlignment="Center"
+                           Margin="40,0,0,0"/>
+                    <TextBlock Text="/"
+                           FontSize="22"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding VideoDuration}"
+                        FontSize="22"
+                        FontFamily="Helvetica"
+                        FontWeight="Light"
+                        VerticalAlignment="Center"
+                        Margin="0,0,33,0"/>
+                </StackPanel>-->
+
             </StackPanel>
 
             <TextBlock Text="KataskopeyaPlay"

@@ -11,8 +11,7 @@ namespace Kataskopeya.Services
         private readonly VideoFileWriter _writer;
         private DateTime? _firstFrameTime;
         private int _videoDurationTracker;
-        private int _15MinutesInFrames = 18000;
-        private string _fileNameSeparator = "_";
+        private int _frapsPerMinute = 1500;
 
         public VideoRecordingService()
         {
@@ -48,7 +47,10 @@ namespace Kataskopeya.Services
         {
             _videoDurationTracker++;
 
-            if (_videoDurationTracker % _15MinutesInFrames == 0)
+            var durationOfRecordedVideoChunk = SettingsService.GetApplicationSettings().DurationOfRecordedVideoChunk;
+            var chunkTimeSize = _frapsPerMinute * durationOfRecordedVideoChunk;
+
+            if (_videoDurationTracker % chunkTimeSize == 0)
             {
                 var filePath = AppDomain
                     .CurrentDomain

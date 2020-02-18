@@ -7,7 +7,6 @@ namespace Kataskopeya.Services
     {
         private MotionDetector _motionDetector;
 
-
         public MotionDetectionService()
         {
             _motionDetector = new MotionDetector(new TwoFramesDifferenceDetector(), new MotionBorderHighlighting());

@@ -1,6 +1,7 @@
 ﻿using AForge.Video;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Kataskopeya.Commands;
 using Kataskopeya.Common.Constants;
 using Kataskopeya.CustomEventArgs;
 using Kataskopeya.EF.Models;
@@ -25,8 +26,9 @@ namespace Kataskopeya.ViewModels
         private BitmapImage _image;
         private ObservableCollection<MonitoringImage> _monitoringImages;
         private ObservableCollection<CameraScreen> _ipCameraUrls;
-        private readonly VideoRecordingService _videoRecordingService;
         private readonly CamerasService _camerasService;
+        private MonitoringImage _selectedItem;
+        private ICommand _removeCameraCommand;
         private int _displayWidth;
         private int _displayHeight;
 
@@ -34,7 +36,6 @@ namespace Kataskopeya.ViewModels
         {
             DisplayHeight = DisplayData.DisplayHeight;
             DisplayWidth = DisplayData.DisplayWidth;
-            _videoRecordingService = new VideoRecordingService();
             PreviousWindowCommand = new RelayCommand(GetToPreviousWindow);
             AddNewCameraCommand = new RelayCommand(AddNewCamera);
             IpCameraUrls = new ObservableCollection<CameraScreen>();
@@ -83,9 +84,23 @@ namespace Kataskopeya.ViewModels
             set { Set(ref _displayHeight, value); }
         }
 
+        public MonitoringImage SelectedItem
+        {
+            get { return _selectedItem; }
+            set { Set(ref _selectedItem, value); }
+        }
+
         public ICommand PreviousWindowCommand { get; private set; }
 
         public ICommand AddNewCameraCommand { get; private set; }
+
+        public ICommand RemoveCameraCommand
+        {
+            get
+            {
+                return _removeCameraCommand ?? (_removeCameraCommand = new BaseCommandHandler(param => RemoveCameraHandler(param), true));
+            }
+        }
 
         public Action CloseAction { get; set; }
 
@@ -141,7 +156,6 @@ namespace Kataskopeya.ViewModels
 
                 var monitoringImage = new MonitoringImage(url, HalfWidth - 20, HalfHeight);
 
-                monitoringImage.UpdateMainCamerasOnDelete += RemoveCameraHandler;
                 monitoringImage.VideoRecordingService = new VideoRecordingService();
                 monitoringImage.CameraName = cameraName;
 
@@ -161,9 +175,11 @@ namespace Kataskopeya.ViewModels
             }
         }
 
-        private async void RemoveCameraHandler(object sender, MainCamerasEventArgs eventArgs)
+        private async void RemoveCameraHandler(object param)
         {
-            await _camerasService.RemoveCamera(eventArgs.CameraUrl);
+            var monitoringImage = param as MonitoringImage;
+
+            await _camerasService.RemoveCamera(monitoringImage.Url);
             PrepareWindowToWork();
         }
 
@@ -192,6 +208,7 @@ namespace Kataskopeya.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Oppps, video stream have fallen down.", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -210,7 +227,7 @@ namespace Kataskopeya.ViewModels
                     Url = camera.Url,
                     GridWidth = HalfWidth - 20,
                     GridHeight = HalfHeight,
-                    IsRecordSetupNeed = true
+                    IsRecordSetupNeed = true,
                 };
 
                 MonitoringImages.Add(monitoringImage);

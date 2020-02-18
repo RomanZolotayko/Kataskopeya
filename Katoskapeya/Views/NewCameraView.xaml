@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Kataskopeya.ViewModels"
         xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
         mc:Ignorable="d"
-        Title="NewCameraView" Height="350" Width="600">
+        Title="NewCameraView"
+        Height="350"
+        Width="600"
+        WindowStyle="None">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
