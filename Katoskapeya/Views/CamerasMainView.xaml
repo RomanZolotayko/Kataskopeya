@@ -69,6 +69,7 @@
                          ItemsSource="{Binding MonitoringImages}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                         MaxHeight="10000000"
                          SelectedItem="{Binding SelectedItem}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>

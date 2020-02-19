@@ -106,6 +106,7 @@ namespace Kataskopeya.ViewModels
             //}
 
             //_videoSource = new VideoCaptureDevice(CapturedDevice.MonikerString);
+
             _videoSource = new MJPEGStream(CameraUrl);
             _videoSource.NewFrame += ProcessVideo_Frame;
             _videoSource.Start();

@@ -20,7 +20,7 @@ namespace Kataskopeya.Services
             _cascadeClassifier = new CascadeClassifier(@"haarcascade_frontalface_alt_tree.xml");
             _context = new KataskopeyaContext();
             _recognitionEngine = new RecognizerEngine(@"trainningData.YAML");
-            Task.Run(() => _recognitionEngine.TrainRecognizer()).Wait();
+            //Task.Run(() => _recognitionEngine.TrainRecognizer()).Wait();
         }
 
         public string RecognizedUser { get; set; }

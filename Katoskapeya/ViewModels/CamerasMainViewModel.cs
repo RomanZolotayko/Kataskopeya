@@ -181,6 +181,7 @@ namespace Kataskopeya.ViewModels
             await _camerasService.RemoveCamera(monitoringImage.Url);
 
             monitoringImage.VideoSource.Stop();
+            monitoringImage.VideoSource.WaitForStop();
             PrepareWindowToWork();
         }
 
