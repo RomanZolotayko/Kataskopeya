@@ -1,5 +1,6 @@
 ﻿using AForge.Imaging.Filters;
 using AForge.Video;
+using AForge.Video.DirectShow;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Common.Constants;
@@ -93,8 +94,18 @@ namespace Kataskopeya.ViewModels
 
         public ICommand EnableMotionCaptureModeCommand { get; set; }
 
+        public FilterInfo CapturedDevice { get; set; }
+
         private void StartCamera()
         {
+            //var capturedDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+            //foreach (FilterInfo device in capturedDevices)
+            //{
+            //    CapturedDevice = device;
+            //}
+
+            //_videoSource = new VideoCaptureDevice(CapturedDevice.MonikerString);
             _videoSource = new MJPEGStream(CameraUrl);
             _videoSource.NewFrame += ProcessVideo_Frame;
             _videoSource.Start();

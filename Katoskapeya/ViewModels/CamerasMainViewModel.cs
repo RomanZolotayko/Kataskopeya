@@ -178,8 +178,9 @@ namespace Kataskopeya.ViewModels
         private async void RemoveCameraHandler(object param)
         {
             var monitoringImage = param as MonitoringImage;
-
             await _camerasService.RemoveCamera(monitoringImage.Url);
+
+            monitoringImage.VideoSource.Stop();
             PrepareWindowToWork();
         }
 

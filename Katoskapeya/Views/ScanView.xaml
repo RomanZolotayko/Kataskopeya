@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kataskopeya.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="ScanView"
         Height="450"
         WindowStyle="None"
+        ResizeMode="NoResize"
         Width="800">
     <Grid>
         <Grid>
@@ -16,7 +18,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border CornerRadius="10" Grid.ColumnSpan="2">
+            <Border Grid.ColumnSpan="2">
                 <Border.Background>
                     <LinearGradientBrush>
                         <GradientStop Color="#c31432" Offset="0.0"/>
@@ -30,22 +32,63 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1">
-                <TextBlock Text="To enable the recognition engine you need a webcam, and light place, where a camera could take your photo. You need to follow all the next instructions if you want to succeed. Click the button below when you are ready." 
+                <TextBlock Text="To enable the recognition engine you need a webcam, and light place, where a camera could take your photo. Put the camera a meter and half away from you, it's important. You need to follow all the next instructions if you want to succeed. Click the button below when you are ready." 
                            Width="300"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Foreground="AliceBlue"
+                           TextWrapping="Wrap"
+                           Margin="0,20,0,0"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Your name:"
+                           Margin="0,25,0,0"
+                             FontSize="24"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Background="Transparent"
+                           Foreground="White"/>
+                    <TextBox   Width="250"
+                           Margin="0,25,0,0"
+                           Text="{Binding Username, Mode=TwoWay}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            FontSize="24"
                            FontFamily="Helvetica"
                            FontWeight="Light"
-                           Foreground="AliceBlue"
-                           TextWrapping="Wrap"
-                           Margin="0,75,0,0"/>
+                           Background="Transparent"
+                           Foreground="White"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Your age:"
+                           Margin="0,25,20,0"
+                             FontSize="24"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Background="Transparent"
+                           Foreground="White"
+                           HorizontalContentAlignment="Right" Width="106"/>
+                    <TextBox   Width="250"
+                           Margin="0,25,0,0"
+                           Text="{Binding Age, Mode=TwoWay}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="24"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Background="Transparent"
+                           Foreground="White"/>
+                </StackPanel>
+
                 <Button Width="100"
                             Height="40"
                             Content="Start scan"
                             Margin="60,20,60,0"
-                            Command="{Binding Login}"
-                            CommandParameter="{Binding ElementName=Password}"/>
+                            Command="{Binding StartFaceScanCommand}"/>
             </StackPanel>
 
         </Grid>

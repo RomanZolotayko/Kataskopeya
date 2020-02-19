@@ -4,13 +4,13 @@ using System.Windows;
 
 namespace Kataskopeya.Views
 {
-    public partial class ScanView : Window
+    public partial class FaceScannerView : Window
     {
-        public ScanView()
+        public FaceScannerView()
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            var viewModel = new ScanViewModel();
+            var viewModel = new FaceScannerViewModel();
             this.DataContext = viewModel;
             if (viewModel.CloseAction == null)
                 viewModel.CloseAction = new Action(this.Close);

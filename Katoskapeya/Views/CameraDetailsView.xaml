@@ -34,7 +34,7 @@
                     Width="100" 
                     Height="100" 
                     Content="&#x2190;"
-                    Margin="100,50,0,50"
+                    Margin="50,50,0,50"
                     FontSize="30"
                     HorizontalAlignment="Left"
                     Command="{Binding PreviousWindowCommand}"/>
@@ -87,6 +87,7 @@
                            Margin="100,0,0,0"
                            FontFamily="Helvetica"
                            FontWeight="Light"
+                           Foreground="White"
                            FontSize="22"></TextBlock>
             </StackPanel>
         </Grid>

@@ -88,6 +88,11 @@
                                 Width="{Binding GridWidth}"
                                 Height="{Binding GridHeight}">
                                 <Image Source="{Binding Image}">
+                                    <Image.InputBindings>
+                                        <MouseBinding MouseAction="LeftDoubleClick" 
+                                                      Command="{Binding OpenCameraDetailsCommand}"
+                                                      CommandParameter="{Binding Url}"/>
+                                    </Image.InputBindings>
                                 </Image>
                             </StackPanel>
                         </DataTemplate>

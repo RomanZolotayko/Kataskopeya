@@ -56,6 +56,32 @@ namespace Kataskopeya.Helpers
             }
         }
 
+        public async void TrainRecognizerByUser(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == username);
+            if (user != null)
+            {
+                var faceImages = new List<Image<Gray, byte>>();
+                var faceLabels = new List<int>();
+
+                var dbUserPhotos = await _context.UserFaceImages.Include(ufi => ufi.FaceImage).ToListAsync();
+
+                var userPhotos = dbUserPhotos.Where(ufi => ufi.UserId == user.Id).Select(ufi => ufi.FaceImage);
+
+                Stream stream = new MemoryStream();
+                foreach (var item in userPhotos)
+                {
+                    stream.Write(item.Face, 0, item.Face.Length);
+                    var faceImage = new Image<Gray, byte>(new Bitmap(stream));
+                    faceImages.Add(faceImage.Resize(100, 100, Inter.Cubic));
+                    faceLabels.Add(user.Id);
+
+                    faceRecognizer.Train(faceImages.ToArray(), faceLabels.ToArray());
+                    faceRecognizer.Save(recognizerPath);
+                }
+            }
+        }
+
         public int RecognizeUser(Image<Gray, byte> userImage)
         {
             faceRecognizer.Load(recognizerPath);

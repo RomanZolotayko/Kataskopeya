@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kataskopeya.Common.Constants;
+using System;
 
 namespace Kataskopeya.Extensions
 {

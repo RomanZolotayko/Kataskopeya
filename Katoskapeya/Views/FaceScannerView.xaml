@@ -1,0 +1,90 @@
+﻿<Window x:Class="Kataskopeya.Views.FaceScannerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kataskopeya.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="FaceScannerView"
+        Height="540"
+        Width="500"
+        WindowStyle="None"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="300"/>
+                <RowDefinition Height="140"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.RowSpan="3">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#c31432" Offset="0.0"/>
+                        <GradientStop Color="#240b36" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <StackPanel Visibility="{Binding PanelsVisability}" Grid.Row="0">
+                <Button Width="50" Height="40" 
+                            VerticalAlignment="Bottom" 
+                            HorizontalAlignment="Left"
+                            Margin="50,20,0,0"
+                            Content="&#x2190;"
+                            FontSize="30"
+                            Command="{Binding PreviousWindowCommand}"/>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding PanelsVisability}" Grid.Row="1">
+                <Image Source="{Binding Image}" Height="300" Width="500"/>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding PanelsVisability}" Grid.Row="2">
+                <TextBlock Text="{Binding UserMessage}"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="18"
+                           Width="450"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Foreground="AliceBlue"
+                           Margin="0,10,0,0"/>
+                <Button Width="100"
+                            Height="40"
+                            Content="SCAN"
+                            Command="{Binding StartScanCommand}"
+                            Margin="0,14,0,0"
+                            IsEnabled="{Binding IsScanButtonEnabled}"/>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding SpinnerVisability}" Grid.Row="1">
+                <fa:ImageAwesome Icon="Cog" Spin="True" Height="100" Margin="0,100,0,0" Width="100" Grid.Row="1" />
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding ThumbUpVisability}" Grid.Row="1">
+                <fa:ImageAwesome Icon="ThumbsUp" Spin="False" Height="100" Width="100" Margin="0,100,0,0" Grid.Row="1" />
+                <TextBlock Text="We're finished here!"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="18"
+                           Width="150"
+                           FontFamily="Helvetica"
+                           FontWeight="Light"
+                           Foreground="AliceBlue"
+                           Margin="0,10,0,0"/>
+                <Button Width="100"
+                            Height="40"
+                            Content="Get to menu"
+                            Command="{Binding StartScanCommand}"
+                            Margin="0,14,0,0"
+                            IsEnabled="{Binding IsScanButtonEnabled}"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</Window>

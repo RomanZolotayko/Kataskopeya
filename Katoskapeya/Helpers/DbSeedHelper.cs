@@ -14,17 +14,17 @@ namespace Kataskopeya.Helpers
         {
             if (!context.Users.Any())
             {
-                var directiory = new DirectoryInfo(FileSystemPaths.DebugFolder + "photosDataset");
-                var files = directiory.GetFiles("*.png");
+                //var directory = new DirectoryInfo(FileSystemPaths.DebugFolder + "photosDataset");
+                //var files = directory.GetFiles("*.png");
 
-                var myFiles = files.Where(x => x.Name.Contains("myPhoto"));
+                //var myFiles = files.Where(x => x.Name.Contains("myPhoto"));
 
-                var myPhotos = new List<byte[]>();
+                //var myPhotos = new List<byte[]>();
 
-                foreach (var photo in myFiles)
-                {
-                    myPhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"photosDataset/{photo.Name}"));
-                }
+                //foreach (var photo in myFiles)
+                //{
+                //    myPhotos.Add(File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + $"photosDataset/{photo.Name}"));
+                //}
 
                 var user = new User
                 {
@@ -35,19 +35,19 @@ namespace Kataskopeya.Helpers
 
                 context.Users.Add(user);
 
-                foreach (var image in myPhotos)
-                {
-                    var userFaceImage = new UserFaceImage
-                    {
-                        FaceImage = new FaceImage
-                        {
-                            Face = image
-                        },
-                        UserId = user.Id
-                    };
+                //foreach (var image in myPhotos)
+                //{
+                //    var userFaceImage = new UserFaceImage
+                //    {
+                //        FaceImage = new FaceImage
+                //        {
+                //            Face = image
+                //        },
+                //        UserId = user.Id
+                //    };
 
-                    context.UserFaceImages.Add(userFaceImage);
-                }
+                //    context.UserFaceImages.Add(userFaceImage);
+                //}
 
                 context.SaveChanges();
             }

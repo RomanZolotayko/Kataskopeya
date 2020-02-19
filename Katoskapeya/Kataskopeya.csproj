@@ -93,6 +93,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -236,9 +239,12 @@
     <Compile Include="Models\ArchiveVideo.cs" />
     <Compile Include="Models\MonitoringImage.cs" />
     <Compile Include="Models\PagedDirectoryFiles.cs" />
+    <Compile Include="Models\Station.cs" />
+    <Compile Include="Processors\FaceImageProcessor.cs" />
     <Compile Include="Processors\PagingProcessor.cs" />
     <Compile Include="Services\CamerasService.cs" />
     <Compile Include="Services\FaceAnalyzerService.cs" />
+    <Compile Include="Services\FaceScannerService.cs" />
     <Compile Include="Services\MotionDetectionService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\VideoRecordingService.cs" />
@@ -246,9 +252,11 @@
     <Compile Include="Models\CameraScreen.cs" />
     <Compile Include="ViewModels\CameraDetailsViewModel.cs" />
     <Compile Include="ViewModels\CamerasMainViewModel.cs" />
+    <Compile Include="ViewModels\FaceScannerViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\NewCameraViewModel.cs" />
+    <Compile Include="ViewModels\ScanViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\VideoPlayerViewModel.cs" />
     <Compile Include="Views\ArchiveView.xaml.cs">
@@ -259,6 +267,9 @@
     </Compile>
     <Compile Include="Views\CamerasMainView.xaml.cs">
       <DependentUpon>CamerasMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FaceScannerView.xaml.cs">
+      <DependentUpon>FaceScannerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginMainView.xaml.cs">
       <DependentUpon>LoginMainView.xaml</DependentUpon>
@@ -336,6 +347,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CamerasMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FaceScannerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

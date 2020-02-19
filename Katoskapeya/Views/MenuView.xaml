@@ -38,7 +38,8 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1" Margin="0,50,0,0">
-                <Button Width="200" Height="100" Content="SCANNER"/>
+                <Button Width="200" Height="100" Content="SCANNER"
+                        Command="{Binding OpenScanWindowCommand}"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Margin="0,50,0,0">

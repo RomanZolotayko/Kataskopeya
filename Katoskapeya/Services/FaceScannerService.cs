@@ -1,36 +1,33 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Kataskopeya.Common.Constants;
 using Kataskopeya.EF;
-using Kataskopeya.Helpers;
 using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Drawing.Imaging;
 
 namespace Kataskopeya.Services
 {
-    public class FaceAnalyzerService
+    public class FaceScannerService
     {
         private readonly CascadeClassifier _cascadeClassifier;
         private readonly KataskopeyaContext _context;
-        private RecognizerEngine _recognitionEngine;
+        private int _nameTracker;
+        private int _indexer;
 
-        public FaceAnalyzerService()
+        public FaceScannerService()
         {
             _cascadeClassifier = new CascadeClassifier(@"haarcascade_frontalface_alt_tree.xml");
             _context = new KataskopeyaContext();
-            _recognitionEngine = new RecognizerEngine(@"trainningData.YAML");
-            Task.Run(() => _recognitionEngine.TrainRecognizer()).Wait();
         }
 
-        public string RecognizedUser { get; set; }
-
-        public string Analyze(Bitmap bitmap, int fpsIndexer)
+        public void Scan(Bitmap bitmap, string username)
         {
             var size = new Size(30, 30);
 
             var grayFrame = new Image<Bgr, byte>(bitmap);
             var rectangles = _cascadeClassifier.DetectMultiScale(grayFrame, 1.5, 1, size);
+            _indexer++;
 
             foreach (var rect in rectangles)
             {
@@ -42,18 +39,14 @@ namespace Kataskopeya.Services
                         graphics.DrawRectangle(pen, rect);
                     }
 
-                    if (fpsIndexer % 30 == 0)
-                    {
-                        var catchedFace = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                        var label = _recognitionEngine.RecognizeUser(catchedFace);
-                        var user = _context.Users.FirstOrDefault(x => x.Id == label);
-                        RecognizedUser = user == null ? RecognizedUser = "Unknown" : RecognizedUser = user.Name;
-                    }
 
+                    if (_indexer % 30 == 0)
+                    {
+                        var faceScreenShot = grayFrame.Copy(rect).Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
+                        faceScreenShot.Bitmap.Save(FileSystemPaths.ScannerOutput + $"\\{username}\\" + $"/{_nameTracker++}_" + "faceimage.png", ImageFormat.Png);
+                    }
                 }
             }
-
-            return RecognizedUser;
         }
     }
 }
