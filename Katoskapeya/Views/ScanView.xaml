@@ -7,7 +7,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="ScanView"
-        Height="450"
+        Height="500"
         WindowStyle="None"
         ResizeMode="NoResize"
         Width="800">
@@ -27,11 +27,19 @@
                 </Border.Background>
             </Border>
 
-            <StackPanel Grid.Column="0">
-                <Image Source="/Images/facerecognition.png" Width="400" Height="450"/>
+            <Button Width="50" Height="40" 
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Left"
+                            Margin="50,20,0,0"
+                            Content="&#x2190;"
+                            FontSize="30"
+                            Command="{Binding PreviousWindowCommand}"/>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Bottom" Height="422">
+                <Image Source="/Images/facerecognition.png" Width="400" Height="422"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" Margin="0,50,0,0">
                 <TextBlock Text="To enable the recognition engine you need a webcam, and light place, where a camera could take your photo. Put the camera a meter and half away from you, it's important. You need to follow all the next instructions if you want to succeed. Click the button below when you are ready." 
                            Width="300"
                            HorizontalAlignment="Center"

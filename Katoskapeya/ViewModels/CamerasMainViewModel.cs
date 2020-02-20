@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Kataskopeya.Commands;
 using Kataskopeya.Common.Constants;
-using Kataskopeya.CustomEventArgs;
 using Kataskopeya.EF.Models;
 using Kataskopeya.Extensions;
 using Kataskopeya.Models;
@@ -12,6 +11,7 @@ using Kataskopeya.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -38,9 +38,12 @@ namespace Kataskopeya.ViewModels
             DisplayWidth = DisplayData.DisplayWidth;
             PreviousWindowCommand = new RelayCommand(GetToPreviousWindow);
             AddNewCameraCommand = new RelayCommand(AddNewCamera);
+            BreakRecordingCommand = new RelayCommand(BreakRecording);
+            EnableRecordingCommand = new RelayCommand(EnableRecording);
             IpCameraUrls = new ObservableCollection<CameraScreen>();
             MonitoringImages = new ObservableCollection<MonitoringImage>();
             _camerasService = new CamerasService();
+            Directory.CreateDirectory(FileSystemPaths.DebugFolder + "\\" + FolderNames.VideoMaterialsFolder);
             PrepareWindowToWork();
         }
 
@@ -94,6 +97,10 @@ namespace Kataskopeya.ViewModels
 
         public ICommand AddNewCameraCommand { get; private set; }
 
+        public ICommand BreakRecordingCommand { get; private set; }
+
+        public ICommand EnableRecordingCommand { get; private set; }
+
         public ICommand RemoveCameraCommand
         {
             get
@@ -111,6 +118,23 @@ namespace Kataskopeya.ViewModels
             image.VideoSource = _videoSource;
             _videoSource.NewFrame += CaptureVideo_Frame;
             _videoSource.Start();
+        }
+
+        public void BreakRecording()
+        {
+            foreach (var image in MonitoringImages)
+            {
+                image.IsRecording = false;
+                image.VideoRecordingService.StopVideoRecording();
+            }
+        }
+
+        public void EnableRecording()
+        {
+            foreach (var image in MonitoringImages)
+            {
+                image.IsRecording = true;
+            }
         }
 
         private void StartAllCameras()
@@ -158,6 +182,7 @@ namespace Kataskopeya.ViewModels
 
                 monitoringImage.VideoRecordingService = new VideoRecordingService();
                 monitoringImage.CameraName = cameraName;
+                monitoringImage.IsRecording = true;
 
                 MonitoringImages.Add(monitoringImage);
 
@@ -182,6 +207,7 @@ namespace Kataskopeya.ViewModels
 
             monitoringImage.VideoSource.Stop();
             monitoringImage.VideoSource.WaitForStop();
+            monitoringImage.VideoRecordingService.StopVideoRecording();
             PrepareWindowToWork();
         }
 
@@ -201,7 +227,10 @@ namespace Kataskopeya.ViewModels
                         monitoringImage.VideoRecordingService.SetUpRecordingEngine(bitmap.Width, bitmap.Height, monitoringImage.CameraName);
                     }
 
-                    monitoringImage.VideoRecordingService.StartVideoRecording(bitmap);
+                    if (monitoringImage.IsRecording)
+                    {
+                        monitoringImage.VideoRecordingService.StartVideoRecording(bitmap);
+                    }
                 }
 
                 bitmapImage.Freeze();
@@ -230,6 +259,7 @@ namespace Kataskopeya.ViewModels
                     GridWidth = HalfWidth - 20,
                     GridHeight = HalfHeight,
                     IsRecordSetupNeed = true,
+                    IsRecording = true
                 };
 
                 MonitoringImages.Add(monitoringImage);

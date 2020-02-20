@@ -50,7 +50,7 @@ namespace Kataskopeya.Services
             var durationOfRecordedVideoChunk = SettingsService.GetApplicationSettings().DurationOfRecordedVideoChunk;
             var chunkTimeSize = _frapsPerMinute * durationOfRecordedVideoChunk;
 
-            if (_videoDurationTracker % chunkTimeSize == 0)
+            if (_videoDurationTracker % chunkTimeSize == 0 || !_writer.IsOpen)
             {
                 var filePath = AppDomain
                     .CurrentDomain
@@ -74,7 +74,6 @@ namespace Kataskopeya.Services
         public void StopVideoRecording()
         {
             _writer.Close();
-            _writer.Dispose();
         }
     }
 }

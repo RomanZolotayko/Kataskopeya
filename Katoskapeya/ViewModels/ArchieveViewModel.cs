@@ -174,7 +174,6 @@ namespace Kataskopeya.ViewModels
                 var archivedVideo = new ArchiveVideo
                 {
                     Fullname = file.FullName,
-                    Stream = File.ReadAllBytes(file.FullName),
                     Name = file.Name.Split('.').First(),
                     CreationDate = file.Name.GetDateFromFileName()
                 };

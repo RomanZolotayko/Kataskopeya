@@ -1,7 +1,5 @@
 ﻿using Kataskopeya.EF;
 using Kataskopeya.Helpers;
-using Kataskopeya.Views;
-using System;
 using System.Windows;
 
 namespace Kataskopeya

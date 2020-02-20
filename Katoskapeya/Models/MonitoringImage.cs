@@ -32,6 +32,8 @@ namespace Kataskopeya.Models
 
         public string CameraName { get; set; }
 
+        public bool IsRecording { get; set; }
+
         public bool IsRecordSetupNeed { get; set; }
 
         public VideoRecordingService VideoRecordingService { get; set; }
