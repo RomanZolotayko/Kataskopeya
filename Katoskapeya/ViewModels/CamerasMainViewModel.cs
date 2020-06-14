@@ -204,43 +204,43 @@ namespace Kataskopeya.ViewModels
         {
             var monitoringImage = param as MonitoringImage;
             await _camerasService.RemoveCamera(monitoringImage.Url);
-
-            monitoringImage.VideoSource.Stop();
-            monitoringImage.VideoSource.WaitForStop();
-            monitoringImage.VideoRecordingService.StopVideoRecording();
             PrepareWindowToWork();
         }
 
         private void CaptureVideo_Frame(object sender, NewFrameEventArgs eventArgs)
         {
             var monitoringImage = MonitoringImages.FirstOrDefault(mi => mi.Url == ((MJPEGStream)sender).Source);
-            try
+            if (monitoringImage != null)
             {
-                BitmapImage bitmapImage;
-                using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+                try
                 {
-                    bitmapImage = bitmap.ToBitmapImage();
-
-                    if (monitoringImage.IsRecordSetupNeed)
+                    BitmapImage bitmapImage;
+                    using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
                     {
-                        monitoringImage.IsRecordSetupNeed = false;
-                        monitoringImage.VideoRecordingService.SetUpRecordingEngine(bitmap.Width, bitmap.Height, monitoringImage.CameraName);
+                        bitmapImage = bitmap.ToBitmapImage();
+
+                        if (monitoringImage.IsRecordSetupNeed)
+                        {
+                            monitoringImage.IsRecordSetupNeed = false;
+                            monitoringImage.VideoRecordingService.SetUpRecordingEngine(bitmap.Width, bitmap.Height, monitoringImage.CameraName);
+                        }
+
+                        if (monitoringImage.IsRecording)
+                        {
+                            monitoringImage.VideoRecordingService.StartVideoRecording(bitmap);
+                        }
                     }
 
-                    if (monitoringImage.IsRecording)
-                    {
-                        monitoringImage.VideoRecordingService.StartVideoRecording(bitmap);
-                    }
+                    bitmapImage.Freeze();
+                    Dispatcher.CurrentDispatcher.Invoke(() => monitoringImage.Image = bitmapImage);
+
                 }
-
-                bitmapImage.Freeze();
-                Dispatcher.CurrentDispatcher.Invoke(() => monitoringImage.Image = bitmapImage);
-
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Oppps, video stream have fallen down.", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Oppps, video stream have fallen down.", "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
         }
 
         private async void PrepareWindowToWork()
